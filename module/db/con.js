@@ -37,7 +37,7 @@ const connectDB = async () => {
 //   }
 
   const closeDB = async () => {
-    console.log("CLOSING CONNECTION");
+   console.log("CLOSING CONNECTION");
     await mongoose.disconnect();
   };
 

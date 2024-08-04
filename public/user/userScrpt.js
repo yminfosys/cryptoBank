@@ -286,6 +286,8 @@ function logout(){
   }
 
  async function getUserprofile(userID){
+  
+  $("#waitingPage").css({"display":"block"});
     $("#topnav").css({"display":"block"});
     $("#topBacground").css({"display":"block"});
     $("#footnav").css({"display":"block"});
@@ -522,6 +524,7 @@ function multiCurrency(userID){
   function transectonList(userID){
     $("#last10Transaction").html('');
     $.post('/user/transactionMiniStatement',{userID:userID},function(trns){
+      $("#waitingPage").css({"display":"none"});
       if(trns.length > 0){
         trns.forEach(val => {
           var amt=0
@@ -600,6 +603,9 @@ function multiCurrency(userID){
         </ul>\
       </div>\
     </div>')
+
+   
+
       }else{
         alert('This Are the Fee Of TrxnID : '+trasactionID+'')
       }
