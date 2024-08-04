@@ -725,7 +725,7 @@ router.post('/findCharges', async function(req, res, next) {
     var senderAmount=Number(req.body.senderAmount);
   await dbCon.connectDB();
   const user= await db.user.findOne({userID:req.body.userID})
-  const charges= await db.charges.find({currency:user.currency}).sort({'limitAmount':1});
+  const charges= await db.charges.find({currency:req.body.senderCurrency}).sort({'limitAmount':1});
     for(var i=0; i < charges.length; i++){
       console.log(i);
       if(senderAmount <= charges[i].limitAmount){

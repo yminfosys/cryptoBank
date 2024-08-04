@@ -1030,14 +1030,14 @@ var tt=0;
       });
   }
 
-  function recentPayment(){
-    $("#sendaccountBody").html('<ul class="list-group">\
-      <li class="list-group-item active" aria-current="true">Recents</li>\
-      <li class="list-group-item">\
-        Sukanta Sardar.. 1234567890987\
-      </li>\
-    </ul>')
-  }
+  // function recentPayment(){
+  //   $("#sendaccountBody").html('<ul class="list-group">\
+  //     <li class="list-group-item active" aria-current="true">Recents</li>\
+  //     <li class="list-group-item">\
+  //       Sukanta Sardar.. 1234567890987\
+  //     </li>\
+  //   </ul>')
+  // }
 
   function verifysendAccount(userID){
     var reciverAccountNo=$("#reciverAccountNo").val().trim();
@@ -1080,8 +1080,10 @@ var tt=0;
   function verifyTpin(userID){
     var senderBalance=$("#senderBalance").val();
     var senderAmount=$("#senderAmount").val();
+    var senderCurrency=$("#senderCurrency").val();
+    
 
-    $.post('/user/findCharges',{senderAmount:senderAmount,userID:userID},function(charge){
+    $.post('/user/findCharges',{senderAmount:senderAmount,userID:userID,senderCurrency:senderCurrency},function(charge){
       if(charge){
         if(Number(senderBalance) >= Number(senderAmount) + Number(charge)){
           $("#sendDetails").append('<label  class="form-label float-end">Transaction Charge : '+Number(charge).toFixed(2)+'</label>\
@@ -1332,7 +1334,7 @@ var tt=0;
       if(user){
         //console.log(user)
         if(Number(user.transactionPin) == Number(txPin)){
-          alert("procid")
+         // alert("procid")
           $("#convertBtn").attr('disabled','disabled');
           $("#verifyBtn").attr('disabled','disabled');
           $.post('/user/startCurrencyConvert',{
@@ -1396,6 +1398,8 @@ var tt=0;
 
           })
 
+        }else{
+          alert("Transaction PIN mismatch")
         }
 
 
