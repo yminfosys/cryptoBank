@@ -628,7 +628,7 @@ function multiCurrency(userID){
     $("#view").html('<div class="card" style="height: 80vh; margin-top: 10vh; background-color: rgb(78, 83, 83); color: antiquewhite; margin-bottom: 10vh; overflow: auto;">\
     <div class="card-header">\
       <button onclick="closeWithdral()" type="button" class="btn-close float-end"></button>\
-      <p class="h1">Withdrawl</p>\
+      <p class="h1">Withdrawal</p>\
     </div>\
     <div id="withdralTotalBody"  class="card-body">\
     <div class="mb-1 p-3">\
@@ -876,14 +876,14 @@ var tt=0;
   }
 
   function createMarchantOrder(userID,marchantID,usdtRate,currency){
-    console.log(userID,marchantID,usdtRate,currency)
+    //console.log(userID,marchantID,usdtRate,currency)
     var orderAmt=$('#OrderAmt'+marchantID+'').val();
     var currencySymbol=$('#currencySymbol'+marchantID+'').val();
     var CurrencyRate=$('#CurrencyRate'+marchantID+'').val();
     var orderTime=$('#orderTime'+marchantID+'').val();
     
 
-    console.log(orderAmt, currencySymbol,CurrencyRate)
+    //console.log(orderAmt, currencySymbol,CurrencyRate)
      $.post('/user/createMarchantOrder',{
       userID:userID,
       marchantID:marchantID,
@@ -960,7 +960,7 @@ var tt=0;
       console.log(data)
       if(data.stutas=="200"){
         $("#withdralTotalBody").html('<div class="mb-3">\
-        <p>Your Withdrawl is Successfull<br>\
+        <p>Your Withdrawal is Successfull<br>\
         Transaction Ref Id: '+data.uid+'\
         </P>\
          </div>');
@@ -1675,6 +1675,7 @@ var tt=0;
                   <div class="card-header">\
                      <h4>Merchant Order</h4>\
                      <select onchange="marchentOrderList('+userID+', this.value)" class="form-select">\
+                     <option value="">Select Oder Type</option>\
                       <option value="Pending">Pending</option>\
                       <option value="Complete">Complete</option>\
                     </select>\
@@ -1782,18 +1783,26 @@ var tt=0;
 
 
   async function marchentOrderList(userID,type){
-    console.log(userID,type)
+   // console.log(userID,type)
     $.post('/user/marchentOrderList',{
       userID:userID,
       type:type
-    },function(data){
+    },async function(data){
       if(data.length >0){
+        //console.log(data)
         $("#mrchOrderlist").html('')
-        data.forEach(async val  =>  {
-          console.log(val);
+       // data.forEach(async val  =>  {
+          for(var i=0; i < data.length; i++ ){
+          // console.log(data[i])
+          //}
+          //console.log(val);
+          var val=data[i];
           await $.post('/user/getBankdetails',{userID:val.userID},function(bank){
-            console.log(bank);
-            
+           if(val.orderStatus=="Complete"){
+            var IhaveTransfer='<span class="float-end" > <button type="button" class="btn btn-sm btn-success">Complete</button></span>';
+           }else{
+            var IhaveTransfer='<span class="float-end" > <button onclick="marchantOrdrtComplete('+val.OrderID+')" type="button" class="btn btn-sm btn-success">Tranfer Notify</button></span>';
+           }
             switch (val.currency) {
               case "GBP":
                 $("#mrchOrderlist").append('<li class="list-group-item mb-3" style="background-color: rgb(50, 63, 63); border: none;">\
@@ -1806,7 +1815,7 @@ var tt=0;
                 <span class="float-end">Bank Transfer</span>\
                 <br><span style="font-size: medium; color: #fffbfb;">Order ID: '+val.OrderID+'</span>\
                 <br><span style="font-size: medium; color: #fffbfb;">'+val.currencySymbol+'  '+val.currencyRate+'</span>\
-                <span class="float-end" > <button onclick="marchantOrdrtComplete('+val.OrderID+')" type="button" class="btn btn-sm btn-success">I have Tranfer</button></span>\
+                '+IhaveTransfer+'\
                 <br> Payble Amount <span style="color: #fffbfb;">'+val.currencySymbol+''+Number(val.marchantPaytoCust).toFixed(2)+'</span>\
                </p>\
               <div id="bankdetails'+val.OrderID+'" style="color: #f5efef; display: non;" >\
@@ -1825,7 +1834,7 @@ var tt=0;
                 <span class="float-end">Bank Transfer</span>\
                 <br><span style="font-size: medium; color: #fffbfb;">Order ID: '+val.OrderID+'</span>\
                 <br><span style="font-size: medium; color: #fffbfb;">'+val.currencySymbol+'  '+val.currencyRate+'</span>\
-                <span class="float-end" > <button onclick="marchantOrdrtComplete('+val.OrderID+')" type="button" class="btn btn-sm btn-success">I have Tranfer</button></span>\
+                '+IhaveTransfer+'\
                 <br> Payble Amount <span style="color: #fffbfb;">'+val.currencySymbol+''+Number(val.marchantPaytoCust).toFixed(2)+'</span>\
                </p>\
               <div id="bankdetails'+val.OrderID+'" style="color: #f5efef; display: non;" >\
@@ -1845,7 +1854,7 @@ var tt=0;
                 <span class="float-end">Bank Transfer</span>\
                 <br><span style="font-size: medium; color: #fffbfb;">Order ID: '+val.OrderID+'</span>\
                 <br><span style="font-size: medium; color: #fffbfb;">'+val.currencySymbol+'  '+val.currencyRate+'</span>\
-                <span class="float-end" > <button onclick="marchantOrdrtComplete('+val.OrderID+')" type="button" class="btn btn-sm btn-success">I have Tranfer</button></span>\
+                '+IhaveTransfer+'\
                 <br> Payble Amount <span style="color: #fffbfb;">'+val.currencySymbol+''+Number(val.marchantPaytoCust).toFixed(2)+'</span>\
                </p>\
               <div id="bankdetails'+val.OrderID+'" style="color: #f5efef; display: non;" >\
@@ -1865,7 +1874,7 @@ var tt=0;
                 <span class="float-end">Bank Transfer</span>\
                 <br><span style="font-size: medium; color: #fffbfb;">Order ID: '+val.OrderID+'</span>\
                 <br><span style="font-size: medium; color: #fffbfb;">'+val.currencySymbol+'  '+val.currencyRate+'</span>\
-                <span class="float-end" > <button onclick="marchantOrdrtComplete('+val.OrderID+')" type="button" class="btn btn-sm btn-success">I have Tranfer</button></span>\
+                '+IhaveTransfer+'\
                 <br> Payble Amount <span style="color: #fffbfb;">'+val.currencySymbol+''+Number(val.marchantPaytoCust).toFixed(2)+'</span>\
                </p>\
               <div id="bankdetails'+val.OrderID+'" style="color: #f5efef; display: non;" >\
@@ -1879,7 +1888,7 @@ var tt=0;
           
           })
           
-        });
+        }
       }else{
         $("#mrchOrderlist").html('')
       }
@@ -1890,6 +1899,10 @@ var tt=0;
 
   function marchantOrdrtComplete(OrderID){
     $.post('/user/marchantOrdrtComplete',{OrderID:OrderID},function(data){
+      if(data){
+        //console.log(data)
+         merchantInit(data.merchantuserID);
+      }
 
     })
 

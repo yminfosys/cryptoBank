@@ -308,7 +308,7 @@ router.post('/startCurrencyConvert', async function(req, res, next) {
       /////Transact to/////
       accountTo:user.accountNumber,
       userNameTo:user.userName,
-      transactionType:"Withdrawl",
+      transactionType:"Withdrawal",
       withdralFaitAmount:convertingAmount,
       withdralusdtAmount:convertUsdt,
       cryptoCurrency:"USDT",
@@ -328,7 +328,7 @@ router.post('/startCurrencyConvert', async function(req, res, next) {
       /////Transact to/////
       accountTo:user.accountNumber,
       userNameTo:user.userName,
-      transactionType:"Withdrawl",
+      transactionType:"Withdrawal",
       withdralFaitAmount:fee,
       withdralusdtAmount:convertingFeeUsdt,
       TransacFee:"Yes",
@@ -603,7 +603,7 @@ router.post('/getTransactionsDetails', async function(req, res, next) {
 
   var transactionAmt=0;
 
-  if(trns[0].transactionType == "Withdrawl"){
+  if(trns[0].transactionType == "Withdrawal"){
     transactionAmt= trns[0].withdralFaitAmount;
   }else{
     if(trns[0].transactionType == "Deposit"){
@@ -613,7 +613,7 @@ router.post('/getTransactionsDetails', async function(req, res, next) {
 
   var transactionFee=0;
   if(trnsFee){
-    if(trnsFee.transactionType == "Withdrawl"){
+    if(trnsFee.transactionType == "Withdrawal"){
       transactionFee= trnsFee.withdralFaitAmount;
     }else{
       if(trnsFee.transactionType == "Deposit"){
@@ -771,7 +771,7 @@ router.post('/sentAmountToReceverAccount', async function(req, res, next) {
         /////Transact to/////
         accountTo:reciveruser.accountNumber,
         userNameTo:reciveruser.userName,
-        transactionType:"Withdrawl",
+        transactionType:"Withdrawal",
         withdralFaitAmount:senderAmount,
         withdralusdtAmount:senderUsdt,
         cryptoCurrency:"USDT",
@@ -791,7 +791,7 @@ router.post('/sentAmountToReceverAccount', async function(req, res, next) {
         /////Transact to/////
         accountTo:reciveruser.accountNumber,
         userNameTo:reciveruser.userName,
-        transactionType:"Withdrawl",
+        transactionType:"Withdrawal",
         withdralFaitAmount:senderCharges,
         withdralusdtAmount:senderusdtChargs,
         TransacFee:"Yes",
@@ -879,7 +879,7 @@ router.post('/withdrawlByCrypto', async function(req, res, next) {
        
         const newWithdrawl= await db.tangenLedger({
           trasactionID:uid,
-          transactionType:"Withdrawl",
+          transactionType:"Withdrawal",
           withdralAmount:req.body.UsdtWithdrawlAmt,
           cryptoWalletAddress:req.body.usdtTokenAddress,
           cryptoCurrency:"USDT",
@@ -1175,7 +1175,7 @@ router.post('/createMarchantOrder', async function(req, res, next) {
 router.post('/orderList', async function(req, res, next) {
   try {
   await dbCon.connectDB();
-  const user = await db.merchantorder.find({userID:req.body.userID,orderStatus:"Pending"});
+  const user = await db.merchantorder.find({userID:req.body.userID,orderStatus:"Pending"}).limit(10);
   await dbCon.closeDB();
   res.json(user);
 } catch (error) {
@@ -1188,7 +1188,7 @@ router.post('/orderList', async function(req, res, next) {
 router.post('/marchentOrderList', async function(req, res, next) {
   try {
   await dbCon.connectDB();
-  const user = await db.merchantorder.find({merchantuserID:req.body.userID, orderStatus:req.body.type});
+  const user = await db.merchantorder.find({merchantuserID:req.body.userID, orderStatus:req.body.type}).limit(10);
   await dbCon.closeDB();
   res.json(user);
 } catch (error) {
@@ -1214,6 +1214,65 @@ router.post('/marchantOrdrtComplete', async function(req, res, next) {
 
   await dbCon.connectDB();
   const Order = await db.merchantorder.findOneAndUpdate({OrderID:req.body.OrderID},{$set:{orderStatus:"Complete"}});
+  
+  
+
+  const user = await db.user.findOne({userID:Order.userID});
+  const marchantUser = await db.user.findOne({userID:Order.merchantuserID});
+
+  //////Withdrawal fro user////////////
+  const trxLdrWithdral = await db.transactionledger({
+    userID:user.userID,
+    trasactionID:Order.OrderID,
+    /////Transact from
+    accountFrom:user.accountNumber,
+    userNameFrom:user.userName,
+    /////Transact to/////
+    accountTo:marchantUser.accountNumber,
+    userNameTo:marchantUser.userName,
+    transactionType:"Withdrawal",
+    withdralFaitAmount:Order.frzeeFiatAmount,
+    withdralusdtAmount:Order.frzeeUsdtAmount,
+    cryptoCurrency:"USDT",
+    fiatCurrency:Order.currency,
+    remarks:'Bank Transfer to Merchant',
+    transactionStatus:"Success"
+  });
+  await trxLdrWithdral.save();
+
+
+  ///////Deposit to Merchant////////////
+  const trxLdrdeposit = await db.transactionledger({
+    userID:user.userID,
+    trasactionID:Order.OrderID,
+    /////Transact from
+    accountFrom:user.accountNumber,
+    userNameFrom:user.userName,
+    /////Transact to/////
+    accountTo:marchantUser.accountNumber,
+    userNameTo:marchantUser.userName,
+    transactionType:"Deposit",
+    depositFaitAmount:Order.frzeeFiatAmount,
+    dipositusdtAmount:Order.frzeeUsdtAmount,
+    cryptoCurrency:"USDT",
+    fiatCurrency:Order.currency,
+    remarks:'Bank Transfer to Merchant',
+    transactionStatus:"Success"
+  });
+  await trxLdrdeposit.save();
+
+
+  ///////Un Frzee to User My Currency//////
+  const myCurrency = await db.mycurrency.findOne({userID:user.userID,currency:Order.currency});
+    var newfrzeeFiatAmount=Number(myCurrency.frzeeFiatAmount) - Number(Order.frzeeFiatAmount);
+    var newfrzeeUsdtAmount=Number(myCurrency.frzeeUsdtAmount) - Number(Order.frzeeUsdtAmount);
+  const userMyCyerrency = await db.mycurrency.findOneAndUpdate({userID:user.userID,currency:Order.currency},{$set:{
+        frzeeFiatAmount:newfrzeeFiatAmount,
+        frzeeUsdtAmount:newfrzeeUsdtAmount
+  }});
+
+
+  //console.log(Order)
   await dbCon.closeDB();
   res.json(Order);
 } catch (error) {

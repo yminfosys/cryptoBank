@@ -229,7 +229,7 @@ router.post('/acceptDipositRequest', async function(req, res, next) {
 router.post('/getWithdrawlRequest', async function(req, res, next) {
   try {
   await dbCon.connectDB()
-  const tangen= await db.tangenLedger.find({status:"Request", transactionType:"Withdrawl"});
+  const tangen= await db.tangenLedger.find({status:"Request", transactionType:"Withdrawal"});
     await dbCon.closeDB();
     res.json(tangen);
   
@@ -257,12 +257,12 @@ router.post('/acceptWithdrawlRequest', async function(req, res, next) {
     /////Transact to/////
     accountTo:user.accountNumber,
     userNameTo:user.userName,
-    transactionType:"Withdrawl",
+    transactionType:"Withdrawal",
     withdralFaitAmount:tangen.fiatCurrency,
     withdralusdtAmount:tangen.withdralAmount,
     cryptoCurrency:"USDT",
     fiatCurrency:tangen.currency,
-    remarks:"Withdrawl by Crypto Wallet",
+    remarks:"Withdrawal by Crypto Wallet",
     transactionStatus:"Success"
    }) 
    await transLager.save();
