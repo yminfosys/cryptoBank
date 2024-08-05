@@ -1304,7 +1304,7 @@ var tt=0;
         var afterConvertAmt=Number(data.usdtRate) * Number(convertUsdt);
         var convertingFeeUsdt=Number(fee) / Number(convertingUsdtRate);
 
-        console.log("convertingUsdtRate",convertingUsdtRate,"Balance",Balance,"BalanceUsdt",BalanceUsdt,"myCrrency",myCrrency)
+        //console.log("convertingUsdtRate",convertingUsdtRate,"Balance",Balance,"BalanceUsdt",BalanceUsdt,"myCrrency",myCrrency)
 
         $("#convertingFee").val(fee);
         $("#convertingFeeUsdt").val(convertingFeeUsdt)
@@ -1921,29 +1921,196 @@ var tt=0;
   function footer(userID){
    // alert(userID)
     $("#footnav").css({"display":"block"});
-    $("#footerBody").html('<div onclick=" getUserprofile('+userID+')" style="text-align: center; font-size: small;" >\
+    $("#footerBody").html('<div onclick=" homeBtnClick('+userID+')" style="text-align: center; font-size: small;" >\
       <i style="font-size: 30px;" class="fa fa-home" aria-hidden="true"></i>\
       <br>Home\
     </div>\
-    <div style="text-align: center; font-size: small;" >\
+    <div onclick="transactionHistoryInit('+userID+')" style="text-align: center; font-size: small;" >\
       <i style="font-size: 30px;" class="fa fa-file-text" aria-hidden="true"></i>\
       <br>Transection\
     </div>\
-    <div style="text-align: center; font-size: small;" >\
+    <div onclick="crrencyBtnClick('+userID+')"  style="text-align: center; font-size: small;" >\
       <i style="font-size: 30px;" class="fa fa-btc" aria-hidden="true"></i>\
       <br>Currency\
     </div>\
-    <div style="text-align: center; font-size: small;" >\
+    <div onclick="settingBtnClick('+userID+')"  style="text-align: center; font-size: small;" >\
       <i style="font-size: 30px;" class="fa fa-cog" aria-hidden="true"></i>\
       <br>Setting\
     </div>\
-    <div style="text-align: center; font-size: small;" >\
+    <div onclick="helpBtnClick('+userID+')"  style="text-align: center; font-size: small;" >\
       <i style="font-size: 30px;" class="fa fa-life-ring" aria-hidden="true"></i>\
       <br>Help\
     </div>');
 
     
     
+  }
+
+  function homeBtnClick(userID){
+    $("#view").css({"display":"block"});
+    $("#topBacground").css({"display":"block"});
+    $("#view1").css({"display":"none"});
+    getUserprofile(userID);
+  }
+
+  function transactionHistoryInit(userID){
+    $("#view1").css({"display":"block"});
+    $("#view").css({"display":"none"});
+    $("#topBacground").css({"display":"none"});
+   
+    $("#view1").html('<div class="card" style="background-color: rgb(78, 83, 83); color: antiquewhite;">\
+      <div class="card-header">\
+      <button onclick="closeFooterbtn()" type="button" class="btn-close float-end"></button>\
+          <h3>Transaction</h3>\
+          <div class="row">\
+            <div class="col">\
+              <input id="dateFrm" type="date" class="form-control" value="'+datefoinput()+'">\
+          </div>\
+          <div class="col">\
+            <input id="dateTo" type="date" class="form-control" value="'+datefoinput()+'">\
+          </div>\
+          </div>\
+          <div class="text-align">\
+            <button onclick="getTransactionHistory('+userID+')" class="btn btn-warning btn-sm mt-3 ">Submit</button>\
+            <span></span>\
+          </div>\
+      </div>\
+      <div class="card-body">\
+      <p id="transactionTitle" class="text-center"> </p>\
+        <ol id="transactionHistory" style="height: 60vh; overflow-y: auto;" class="list-group list-group-numbered list-group-item-dark">\
+        </ol>\
+       </div>\
+     </div> ')
+
+  }
+
+  function closeFooterbtn(){
+    $("#view").css({"display":"block"});
+    $("#topBacground").css({"display":"block"});
+    $("#view1").css({"display":"none"});
+  }
+  function getTransactionHistory(userID){
+    var dateFrm=$("#dateFrm").val();
+    var dateTo = $("#dateTo").val();
+    $.post('/user/getTransactionHistory',{userID:userID,dateFrm:dateFrm,dateTo:dateTo},function(data){
+        if(data.length > 0){
+          $("#transactionTitle").html('Date From: '+dateFrm+',   To : '+dateTo+'')
+          $("#transactionHistory").html('')
+          data.forEach(val => {
+            var amt=0
+            if(val.transactionType=="Deposit"){
+              amt=val.depositFaitAmount;
+            }else{
+              amt=val.withdralFaitAmount;
+            }
+            $("#transactionHistory").append('<li class="list-group-item d-flex justify-content-between align-items-start mb-2">\
+        <div class="ms-2 me-auto">\
+          <div class="fw-bold">'+val.transactionType+'</div>\
+          Txtd:'+val.trasactionID+'<br>To: '+val.userNameTo+'<br>From: '+val.userNameFrom+'<br>Date: '+dateFormat(new Date(val.date),"dt")+'<br>Remarks: '+val.remarks+'\
+        </div>\
+        <span class="badge text-bg-primary rounded-pill">'+val.fiatCurrency+' '+Number(amt).toFixed(2)+'</span>\
+        </li>');
+          });
+
+        }else{
+          $("#transactionTitle").html('Date From: '+dateFrm+',   To : '+dateTo+'')
+          $("#transactionHistory").html('')
+          $("#transactionHistory").append('<li  class="list-group-item d-flex justify-content-between align-items-start mb-2">\
+        No Histroy\
+        </li>');
+        }
+    });
+  }
+
+  function crrencyBtnClick(userID){
+    $("#view1").css({"display":"block"});
+    $("#view").css({"display":"none"});
+    $("#topBacground").css({"display":"none"});
+    $("#view1").html('<div class="card" style="background-color: rgb(78, 83, 83); color: antiquewhite;">\
+      <div class="card-header">\
+      <button onclick="closeFooterbtn()" type="button" class="btn-close float-end"></button>\
+          <h3>My Currency</h3>\
+      </div>\
+      <div class="card-body">\
+        <ol id="mycurrencyHistory" style="height: 70vh; overflow-y: auto;" class="list-group list-group-numbered list-group-item-dark">\
+        </ol>\
+       </div>\
+     </div> ')
+    $.post('/user/mycurrencyHistory',{userID:userID},function(data){
+      if(data.length > 0){
+        
+        
+        
+
+
+
+        $("#mycurrencyHistory").html('');
+        data.forEach(val => {
+          var balance= Number(val.lastcheckBalance) - Number(val.frzeeFiatAmount);
+          var balanceUsdt= Number(val.lastCheckUsdtAmount) - Number(val.frzeeUsdtAmount);
+          $("#mycurrencyHistory").append('<li class="list-group-item d-flex justify-content-between align-items-start mb-2">\
+          <div class="ms-2 me-auto">\
+            <div class="fw-bold">Currency : '+val.currency+'</div>\
+            Frozen Amount : '+val.currencySymbol+' '+Number(val.frzeeFiatAmount).toFixed(2)+' <br>USDT: '+Number(val.frzeeUsdtAmount).toFixed(2)+'<br>Total Balance : '+val.currencySymbol+' '+Number(val.lastcheckBalance).toFixed(2)+' <br>USDT: '+Number(val.lastCheckUsdtAmount).toFixed(2)+'\
+          </div>\
+          <span class="badge text-bg-primary rounded-pill">'+val.currencySymbol+' '+Number(balance).toFixed(2)+' <br>USDT: '+Number(balanceUsdt).toFixed(2)+'</span>\
+          </li>');
+        });
+
+      }
+      console.log(data)
+    })
+   
+    
+  }
+
+  function settingBtnClick(userID){
+    $("#view1").css({"display":"block"});
+    $("#view").css({"display":"none"});
+    $("#topBacground").css({"display":"none"});
+   
+    $("#view1").html('<div class="card" style="background-color: rgb(78, 83, 83); color: antiquewhite;">\
+      <div class="card-header">\
+      <button onclick="closeFooterbtn()" type="button" class="btn-close float-end"></button>\
+          <h3>Setting</h3>\
+      </div>\
+      <div class="card-body">\
+        <ol id="transactionHistory" style="height: 60vh; overflow-y: auto;" class="list-group list-group-numbered list-group-item-dark">\
+        </ol>\
+       </div>\
+     </div> ')
+  }
+
+  function helpBtnClick(userID){
+    $("#view1").css({"display":"block"});
+    $("#view").css({"display":"none"});
+    $("#topBacground").css({"display":"none"});
+   
+    $("#view1").html('<div class="card" style="background-color: rgb(78, 83, 83); color: antiquewhite;">\
+      <div class="card-header">\
+      <button onclick="closeFooterbtn()" type="button" class="btn-close float-end"></button>\
+          <h3>Help</h3>\
+      </div>\
+      <div class="card-body">\
+      <p class="text-center">Contact Us : support@paacryptobank.com</p>\
+       </div>\
+     </div> ')
+  }
+
+  function datefoinput(){  
+    var date=new Date();
+    var year=date.getFullYear();  
+    var month=date.getMonth() + 1; 
+    var day=date.getDate();
+    var hours=date.getHours();
+    var minutes=date.getMinutes();
+    if(month < 10){
+      month=('0'+month+'')
+    }
+    if(day < 10){
+      day=('0'+day+'')
+    }
+      return ''+year+'-'+month+'-'+day+''
   }
 
 

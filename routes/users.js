@@ -1283,6 +1283,40 @@ router.post('/marchantOrdrtComplete', async function(req, res, next) {
 
 
 
+router.post('/getTransactionHistory', async function(req, res, next) {
+  try {
+  await dbCon.connectDB();
+  var StartTime = moment(req.body.dateFrm).utc();
+  var EndTime = moment(req.body.dateTo).utc();
+
+  const trns= await db.transactionledger.find({
+    date: { $gte: StartTime.toDate(), $lte: EndTime.toDate() },
+    userID:req.body.userID
+  }).sort({_id:-1});
+  await dbCon.closeDB();
+  res.json(trns);
+}catch (error) {
+  console.log(error);
+  return error;
+}
+});
+
+router.post('/mycurrencyHistory', async function(req, res, next) {
+  try {
+  await dbCon.connectDB();
+  const mucurrency= await db.mycurrency.find({userID:req.body.userID});
+  await dbCon.closeDB();
+  res.json(mucurrency);
+}catch (error) {
+  console.log(error);
+  return error;
+}
+});
+
+
+
+
+
 
 
 

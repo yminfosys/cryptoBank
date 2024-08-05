@@ -90,8 +90,8 @@
         });
     }
 
-    var video='https://paacab.fra1.digitaloceanspaces.com/7bed40a276d6b86c6120e88381705d8c'
-    let position = text.search("https");
+    // var video='https://paacab.fra1.digitaloceanspaces.com/7bed40a276d6b86c6120e88381705d8c'
+    // let position = text.search("https");
 
 
 
@@ -107,76 +107,20 @@
 
     <div id="topBacground"  style="background-color: #041b2b;  height: 25vh; display:none"></div>
     
-   <div   id="view"   class="container-fluid  ">
-
-    <!-- <div class="card"  style="margin-top: 10vh; margin-bottom: 10vh; height: 80vh; overflow-y: auto; ">
-        <div class="card-header">
-          <button onclick="closeWithdral()" type="button" class="btn-close float-end"></button>
-        <h2>Order</h2> 
-        <div class="row">
-            <div class="col">
-                <span>Pending</span>
-            </div>
-            <div  class="col">
-                <span>Cancel</span>
-            </div>
-            <div class="col">
-                <span>Complete</span>
-            </div>
-        </div>
-        </div>
-      <div  class="card-body">
-        <ul class="list-group" style="background-color: #093b2c !important;">
-            <li class="list-group-item" aria-current="true" style="height: 20vh; background-color: rgb(50, 63, 63); border: none;">
-                <p style="font-size: small; color: #797575 !important;" class="text-dark">
-                    <span><i class="fa fa-user-circle" aria-hidden="true"></i></span> &nbsp; 
-                    <span style="font-size: larger; color: #fffbfb;"> marchant Name </span> &nbsp;
-                    <span style="color: #f1de0b;"><i class="fa fa-check-square" aria-hidden="true"></i></span>
-                    <br><span><i class="fa fa-hand-pointer-o" aria-hidden="true"></i> 100%</span> &nbsp; 
-                    <span><i class="fa fa-clock-o" aria-hidden="true"></i> 15 min</span>
-                    <span class="float-end">Cash Collections</span>
-                    <br> Payble Amount <span style="color: #fffbfb;">&#8377;2000.00</span>
-                    <br> Currceny Rate <span style="color: #fffbfb;">&#8377;0.99</span>
-                    <br> Order Amount <span style="color: #fffbfb;">&#8377;2020.00</span>
-                    <br><div class="float-end"> <span style="color: #fffbfb;">Time : 0:0:0</span>
-                    </div> 
-                    <input type="hidden" id="f" value="1">
-                  </p>\
-            </li>
-            
-        </ul>
-       
-      </div>
-    </div> -->
-
-    <div class="row">
-      <div class="col">
-        <ul class="list-group">
-          <div class="card" style="">
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <h6 class="card-subtitle mb-2 text-muted ">Card subtitle</h6>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              b5
-            </div>
+    <div id="view1" style="margin-top: 10vh; margin-bottom: 10vh; height: 80vh; background-color: #3a5d77; overflow-y: auto;">
+      <ol id="mycurrencyHistory" style="height: 70vh; overflow-y: auto;" class="list-group list-group-numbered p-2 list-group-item-dark">
+        <li class="list-group-item d-flex justify-content-between align-items-start mb-2">
+          <div class="ms-2 me-auto">
+            <div class="fw-bold">Currency : GBP</div>
+            Frozen Amount : Rs. 5000<br>Total : Rs. 150000
           </div>
-
-          <div class="card" style="">
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <h6 class="card-subtitle mb-2 text-muted ">Card subtitle</h6>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              b5
-            </div>
-          </div>
-
-          
-        </ul>
-      </div>
+          <span class="badge text-bg-primary rounded-pill">Rs. 100000</span>
+          </li>
+      </ol>
     </div>
-    
-    
 
+   <div   id="view"  style="margin-top: 20vh;"  class="container-fluid  ">
+   
    </div>
 
    <script>
