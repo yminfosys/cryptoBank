@@ -1243,7 +1243,7 @@ router.post('/marchantOrdrtComplete', async function(req, res, next) {
 
   ///////Deposit to Merchant////////////
   const trxLdrdeposit = await db.transactionledger({
-    userID:user.userID,
+    userID:marchantUser.userID,
     trasactionID:Order.OrderID,
     /////Transact from
     accountFrom:user.accountNumber,

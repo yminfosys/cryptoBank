@@ -1297,10 +1297,14 @@ var tt=0;
         $("#convertBtn").css({"display":"block"});
         $("#convertAmountLable").css({"display":"block"});
 
+        
+
         var convertingUsdtRate=Number(Balance) / Number(BalanceUsdt);
         var convertUsdt=Number(convertingAmount) / Number(convertingUsdtRate);
         var afterConvertAmt=Number(data.usdtRate) * Number(convertUsdt);
         var convertingFeeUsdt=Number(fee) / Number(convertingUsdtRate);
+
+        console.log("convertingUsdtRate",convertingUsdtRate,"Balance",Balance,"BalanceUsdt",BalanceUsdt,"myCrrency",myCrrency)
 
         $("#convertingFee").val(fee);
         $("#convertingFeeUsdt").val(convertingFeeUsdt)
