@@ -2075,8 +2075,13 @@ var tt=0;
           <h3>Setting</h3>\
       </div>\
       <div class="card-body">\
-        <ol id="transactionHistory" style="height: 60vh; overflow-y: auto;" class="list-group list-group-numbered list-group-item-dark">\
-        </ol>\
+       <ul class="list-group mt-3">\
+        <li class="list-group-item" onclick="setResetTpin('+userID+')" >Set / Re-set T-Pin</li>\
+        <li class="list-group-item" onclick="paymethodInit('+userID+')">Add Payment Method</li>\
+        <li class="list-group-item" onclick="orderDetails('+userID+')" >Order</li>\
+        <li class="list-group-item" onclick="merchantInit('+userID+')"  >Marchant</li>\
+        <li class="list-group-item" onclick="grievanceInit('+userID+')"  >Grievance</li>\
+        </ul>\
        </div>\
      </div> ')
   }
