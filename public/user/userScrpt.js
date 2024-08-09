@@ -168,6 +168,7 @@ function newRegister(){
             $("#email").focus();
             return 
         }
+        
 
         if(mobileNo.length != 10){
           alert('Enter Valid Mobile Number');

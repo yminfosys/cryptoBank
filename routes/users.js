@@ -177,8 +177,6 @@ router.post('/newregister', async function(req, res, next) {
       }
 
     })
-    
-
   })
  
 } catch (error) {
@@ -459,11 +457,10 @@ router.post('/kycUpload', cpUpload, async function(req, res, next) {
    });
    await newkyc.save();
    const user= await db.user.findOneAndUpdate({userID:req.body.userID},{$set:{varyficatinStatus:"inReview",userName:req.body.kycName}});
-    
    await dbCon.closeDB();
-   res.send("verificetion is Under review it will take up to 72hr.")
+   res.render('user/verification',{status:"in Review", msg:"It will take Up to 72 hr To Complete"})
   }else{
-    res.send("Please upload file and try again")
+    res.render('user/verification',{status:"Error", msg:"Try again"})
   }
 
 }catch (error) {
