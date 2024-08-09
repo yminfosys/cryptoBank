@@ -73,6 +73,7 @@ var upload = multer({
 router.get('/', async function(req, res, next) {
   try {
     var allredylogin=req.cookies.adminID
+    console.log(allredylogin)
     res.render('admin/myadmin',{allredylogin:allredylogin})
   }catch (error) {
     console.log(error);
@@ -80,6 +81,51 @@ router.get('/', async function(req, res, next) {
   }
   
 });
+
+
+router.post('/login', async function(req, res, next) {
+  try {
+    // await dbCon.connectDB();
+    // const user= await db.user.findOne({email:req.body.loginEmail})
+    // ///console.log(user);
+    // await dbCon.closeDB();
+    // if(user){
+    //   bcrypt.compare(req.body.loginPassword,user.password, async function(err,match){
+    //     if(match){
+    //       res.cookie("userID", user.userID, { maxAge:  24 * 60 * 60 * 1000 });
+    //       res.json(user);
+    //     }else{
+    //       res.send(null);
+    //     }
+    //   })
+    // }else{
+    //   res.send(null);
+    // }
+    if(req.body.email=="sukanta.uk@gmail.com" || req.body.email=="masud.uk.e@gmail.com"){
+      if(req.body.password=="A1b1c3b4*" ){
+        res.cookie("adminID", 1, { maxAge:  24 * 60 * 60 * 1000 });
+        res.send("success");
+      }else{
+        res.send("Worng Password");
+      }
+    }else{
+      res.send("Worng Email");
+    }
+    
+    
+  }catch (error) {
+    console.log(error);
+    return error;
+  }
+  
+});
+
+// ////////Profile/////////////
+router.post('/logout', async function(req, res, next) {
+  res.clearCookie("adminID");
+  res.send("ok")
+
+})
 
 
 router.post('/checkuserexist', async function(req, res, next) {

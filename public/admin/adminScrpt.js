@@ -1,5 +1,13 @@
 $( document ).ready(function() {
     var allredyloginuserID=$("#allredyloginuserID").val();
+    if(allredyloginuserID){
+        getdipositRequest(allredyloginuserID);
+        $("#login").css({"display":"none"});
+        $("#view").css({"display":"block"});
+        
+    }else{
+        loginClick();
+    }
     
 
     $('#formId' ).submit(
@@ -21,11 +29,39 @@ $( document ).ready(function() {
         
     );
 
-    getdipositRequest();
-
-   
-
+    
 })
+
+function loginClick(){
+$("#login").css({"display":"block"});
+$("#view").css({"display":"none"});
+
+
+}
+
+function login(){
+    var email=$("#email").val().trim();
+    var password=$("#password").val().trim();
+    $.post('/admin/login',{email:email,password:password},function(data){
+        if(data=="success"){
+            location.replace("/admin");
+        }else{
+            alert(data);
+        }
+       
+    })
+}
+
+function logout(){
+    $.post('/admin/logout',{},function(data){
+        if(data){
+            location.replace("/admin");
+           
+        }
+    })
+
+  }
+  //logout();
 
 function addModifyCountry(){
     var countryName=$("#countryName").val().trim();
@@ -329,22 +365,4 @@ function resetUser(){
 }
 
 
-// function addFundRecive(e){
-//     e.preventDefault();
-//     var virtualAddress=$("#virtualAddress").val().trim();
-//     var networkChannel=$("#networkChannel").val().trim();
-//     var cryptoCurrency=$("#cryptoCurrency").val().trim();
-//     var currencySymbol=$("#currencySymbol").val().trim();
-
-//     alert(virtualAddress)
-//     // $.post('/admin/addModifyCountry',{
-//     //     countryName:countryName,
-//     //     countryCode:countryCode,
-//     //     countryCurrency:countryCurrency,
-//     //     currencySymbol:currencySymbol
-//     // },function(user){
-//     //    console.log(user)
-//     // })
-   
-// }
 

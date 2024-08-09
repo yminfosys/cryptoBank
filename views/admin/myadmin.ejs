@@ -29,75 +29,104 @@
 
     <header>
       <!-- place navbar here -->
-      <nav id="topnav" style="display: none; background-color: #041b2b; color: aliceblue; " class="navbar fixed-top" >
+      <nav id="topnav" style="display: non; background-color: #041b2b; color: aliceblue; " class="navbar fixed-top" >
         <div class="container-fluid">
-              <a> <span style="background-color: #ccdbe6; " class="navbar-toggler-icon" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample"></span></a>
+              <!-- <a> <span style="background-color: #ccdbe6; " class="navbar-toggler-icon" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample"></span></a> -->
               <a class="navbar-brand" href="#"><img src="/images/logo/logo.png" alt="Logo" width="150" height="30" class="d-inline-block align-text-top"> </a>
               <a>
-                <i class="fa fa-bell" aria-hidden="true"></i>
+                <i onclick="logout()" class="fa fa-bell" aria-hidden="true"> Logout</i>
               </a>
         </div>
       </nav>
     </header>
-    <div id="topBacground" style="background-color: #041b2b;  height: 25vh; display:none"></div>
+    <div id="login"  class="container-fluid" style="margin-top: 10vh;" >
+        <div class="row mb-3">
+          <div style="text-align: center; margin-top: 15vh;" class="col">
+            <div style="font-size: 35px; font-weight:bold;">Log in</div>
+            <span>Fill the form to Admin log in</span>
+          </div>
+        </div>
+        <div class="card mb-3" style="background-color: #ccdbe6;">
+          <div class="card-body">
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Email address</label>
+              <input style=" text-decoration: none;"  type="email" class="form-control" id="email" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label ">Password</label>
+              <input type="password" class="form-control" id="password">
+            </div>
+          </div>
+        </div>
+        <!-- <p class="float-start">Register</p>
+        <p class="float-end">Forget Password</p> -->
+        <div class="fixed-bottom">
+            <div class="container-fluid mb-3">
+              <div  class="d-grid gap-2">
+                <button onclick="login()" class="btn btn-primary " type="button">Login</button>
+              </div>
+            </div>
+        </div>
+    </div>
+    
 
-   <div id="view"  class="container-fluid ">
-      <div class="row">
-        <div class="col">
-          <div class="card" style="margin-top: 5vh;">
-            <div class="card-header"><h4>Add new Country</h4></div>
-            <div class="card-body">
-              <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a> -->
-              <div class="mb-3">
-                <label for="countryName" class="form-label">Country Name :</label>
-                <input type="text" class="form-control" id="countryName" placeholder="India">
+   <div id="view"  class="container-fluid" style="margin-top: 10vh; display: none;" >
+        <div class="row">
+          <div class="col">
+            <div class="card" >
+              <div class="card-header"><h4>Add new Country</h4></div>
+              <div class="card-body">
+                <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                <div class="mb-3">
+                  <label for="countryName" class="form-label">Country Name :</label>
+                  <input type="text" class="form-control" id="countryName" placeholder="India">
 
-                <label for="countryName" class="form-label">Country Code :</label>
-                <input type="text" class="form-control" id="countryCode" placeholder="+91">
+                  <label for="countryName" class="form-label">Country Code :</label>
+                  <input type="text" class="form-control" id="countryCode" placeholder="+91">
 
-                <label for="countryName" class="form-label">Currency :</label>
-                <input type="text" class="form-control" id="countryCurrency" placeholder="INR">
+                  <label for="countryName" class="form-label">Currency :</label>
+                  <input type="text" class="form-control" id="countryCurrency" placeholder="INR">
 
-                <label for="countryName" class="form-label">Currency Symbol :</label>
-                <input type="text" class="form-control" id="currencySymbol" placeholder="&amp;#8377;">
-                
-                <button onclick="addModifyCountry()" style="margin-top: 2vh;" type="button" class="btn btn-success">Submit </button>
+                  <label for="countryName" class="form-label">Currency Symbol :</label>
+                  <input type="text" class="form-control" id="currencySymbol" placeholder="&amp;#8377;">
+                  
+                  <button onclick="addModifyCountry()" style="margin-top: 2vh;" type="button" class="btn btn-success">Submit </button>
 
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
 
 
-      <div class="row">
-        <div class="col">
-          <div class="card" style="margin-top: 5vh;">
-            <div class="card-header"><h4>Transaction Charges</h4></div>
-            <div class="card-body">
-              
-              <div class="mb-3">
-
-                <label for="countryName" class="form-label">Currency :</label>
-                <select class="form-select" id="currencyFee" aria-label="">
-                  <option value="">Select</option>
-                </select>
-
-                <label for="countryName" class="form-label">Limit Amount :</label>
-                <input type="text" class="form-control" id="limitAmount" >
-
-                <label for="countryName" class="form-label">Charges :</label>
-                <input type="text" class="form-control" id="transactionCgarge" >
+        <div class="row">
+          <div class="col">
+            <div class="card" style="margin-top: 5vh;">
+              <div class="card-header"><h4>Transaction Charges</h4></div>
+              <div class="card-body">
                 
-                <button onclick="submitTransactionCharges()" style="margin-top: 2vh;" type="button" class="btn btn-success">Submit </button>
+                <div class="mb-3">
 
+                  <label for="countryName" class="form-label">Currency :</label>
+                  <select class="form-select" id="currencyFee" aria-label="">
+                    <option value="">Select</option>
+                  </select>
+
+                  <label for="countryName" class="form-label">Limit Amount :</label>
+                  <input type="text" class="form-control" id="limitAmount" >
+
+                  <label for="countryName" class="form-label">Charges :</label>
+                  <input type="text" class="form-control" id="transactionCgarge" >
+                  
+                  <button onclick="submitTransactionCharges()" style="margin-top: 2vh;" type="button" class="btn btn-success">Submit </button>
+
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
       
       
       <div class="row">
@@ -150,145 +179,145 @@
         </div>
       </div>
 
-      <script>
-        var tog=0;
-        function imageZoom(id){
-          if(tog==0){
-            $("#"+id+"").css({"width": "100%"});
-            tog=1;
-          }else{
-            $("#"+id+"").css({"width": "20%", "height": "20%"});
-            tog=0;
-          }
-          
-        }
-      </script>
+          <script>
+            var tog=0;
+            function imageZoom(id){
+              if(tog==0){
+                $("#"+id+"").css({"width": "100%"});
+                tog=1;
+              }else{
+                $("#"+id+"").css({"width": "20%", "height": "20%"});
+                tog=0;
+              }
+              
+            }
+          </script>
 
 
 
-<div class="row">
-  <div class="col">
-    <div class="card" style="margin-top: 5vh; height: 50vh; overflow-y:auto;">
-      <div class="card-header"><h4>Withdrawl Requiest By Crypto</h4>
-        <i onclick="getWithdrawlRequest()" class="fa fa-refresh" aria-hidden="true"></i>
-      </div>
-      
-      <div class="card-body">
-       <ul  id="withdrawlRequestList" class="list-group">
-    
-       
-       </ul>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-<div class="row">
-  <div class="col">
-    <div class="card" style="margin-top: 5vh; height: 50vh; overflow-y:auto;">
-      <div class="card-header"><h4>Merchant Request</h4>
-        <i onclick="getmerchantRequest()" class="fa fa-refresh" aria-hidden="true"></i>
-      </div>
-      
-      <div class="card-body">
-       <ul  id="merchantRequestList" class="list-group">
-    
-       
-       </ul>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-      <div class="row">
-        <div class="col">
-          <div class="card" style="margin-top: 5vh; height: 50vh; overflow-y:auto;">
-            <div class="card-header"><h4>Account Verification Requiest</h4></div>
-            <div class="card-body">
-              <ul id="accountVerification" class="list-group">
-               <!-- <li class="list-group-item">
-                 <P class="">UserID: 68 <br>Gov ID: PAN [ ADCDD1232E ]<br>Address : ads1,ads2, pin- 700126, City, country, <br>Date: 12-12-1212</P>
-                 <img onclick="imageZoom(345)" id="345" style="width: 20%; height: 20%;" class=" img-thumbnail float-end " src="https://paacab.fra1.digitaloceanspaces.com/1715718676519-paa%20cash%20wallet%20logo.png" alt="scrn">
-                 <img onclick="imageZoom(12345676567)" id="12345676567" style="width: 20%; height: 20%;" class=" img-thumbnail float-end " src="https://paacab.fra1.digitaloceanspaces.com/1715718676519-paa%20cash%20wallet%20logo.png" alt="scrn">
-                 <button type="button" class="btn btn-success btn-sm ">Verified</button>
-                 <button type="button" class="btn btn-danger btn-sm ">Reject</button>
-                 <div class="">
-                    <br><video class="float-end" width="160" height="120" controls>
-                      <source src="https://fra1.digitaloceanspaces.com/paacab/34874a1c93bbd74d144d6a8b589d0635" type="video/mp4">
-                    </video>
-                 </div>
-               </li> -->
-              </ul>
-             </div>
-          </div>
-        </div>
-      </div>
-
-
-      <div class="row">
-        <div class="col">
-          <div class="card" style="margin-top: 5vh;">
-            <div class="card-header"><h4>Update Usdt Rate</h4></div>
-            <div class="card-body">
-              <div class="mb-3">
-                <label for="exampleInputText1" class="form-label">Country</label>
-                <select id="countryList" class="form-select" aria-label="Default select example">
-                  <option value="">Select</option>
-                </select>
+          <div class="row">
+            <div class="col">
+              <div class="card" style="margin-top: 5vh; height: 50vh; overflow-y:auto;">
+                <div class="card-header"><h4>Withdrawl Requiest By Crypto</h4>
+                  <i onclick="getWithdrawlRequest()" class="fa fa-refresh" aria-hidden="true"></i>
+                </div>
+                
+                <div class="card-body">
+                <ul  id="withdrawlRequestList" class="list-group">
+              
+                
+                </ul>
+                </div>
               </div>
-              <div class="mb-3">
-                <label for="exampleInputText1" class="form-label">USDT Rate:</label>
-                <input type="text" class="form-control" id="usdtRate">
-              </div>
-              <button onclick="updateUsdtRate()" type="button" class="btn btn-success">Update</button>
-            </div>
-            <div class="card-body">
-              <ul  id="usdtList" class="list-group">
-                <li class="list-group-item">
-                 <p class="">Country : india [INR] - USDT Rate:89.98</p>
-                </li>
-               </ul>
-
             </div>
           </div>
-        </div>
-      </div>
 
 
-      <div class="row">
-        <div class="col">
-          <div class="card" style="margin-top: 5vh;">
-            <div class="card-header"><h4>Forget Password Request</h4>
-              <i onclick="forgetpasswordInit()" class="fa fa-refresh" aria-hidden="true"></i></div>
-            <div class="card-body">
-            <ul id="forgetList" class="list-group">
-             
-            </ul>
-            
-           
-          </div>
-        </div>
-      </div>
 
-
-      <div class="row">
-        <div class="col">
-          <div class="card" style="margin-top: 5vh;">
-            <div class="card-header"><h4>Account Reset</h4>
-            <div class="card-body">
-              <div class="mb-3">
-                <label for="exampleInputText1" class="form-label">Email</label>
-                <input type="text" class="form-control" id="resetEmail">
+            <div class="row">
+              <div class="col">
+                <div class="card" style="margin-top: 5vh; height: 50vh; overflow-y:auto;">
+                  <div class="card-header"><h4>Merchant Request</h4>
+                    <i onclick="getmerchantRequest()" class="fa fa-refresh" aria-hidden="true"></i>
+                  </div>
+                  
+                  <div class="card-body">
+                  <ul  id="merchantRequestList" class="list-group">
+                
+                  
+                  </ul>
+                  </div>
+                </div>
               </div>
-              <button onclick="resetUser()" type="button" class="btn btn-success">Re-Set</button>
-           
-          </div>
-        </div>
-      </div>
+            </div>
 
+
+              <div class="row">
+                <div class="col">
+                  <div class="card" style="margin-top: 5vh; height: 50vh; overflow-y:auto;">
+                    <div class="card-header"><h4>Account Verification Requiest</h4></div>
+                    <div class="card-body">
+                      <ul id="accountVerification" class="list-group">
+                      <!-- <li class="list-group-item">
+                        <P class="">UserID: 68 <br>Gov ID: PAN [ ADCDD1232E ]<br>Address : ads1,ads2, pin- 700126, City, country, <br>Date: 12-12-1212</P>
+                        <img onclick="imageZoom(345)" id="345" style="width: 20%; height: 20%;" class=" img-thumbnail float-end " src="https://paacab.fra1.digitaloceanspaces.com/1715718676519-paa%20cash%20wallet%20logo.png" alt="scrn">
+                        <img onclick="imageZoom(12345676567)" id="12345676567" style="width: 20%; height: 20%;" class=" img-thumbnail float-end " src="https://paacab.fra1.digitaloceanspaces.com/1715718676519-paa%20cash%20wallet%20logo.png" alt="scrn">
+                        <button type="button" class="btn btn-success btn-sm ">Verified</button>
+                        <button type="button" class="btn btn-danger btn-sm ">Reject</button>
+                        <div class="">
+                            <br><video class="float-end" width="160" height="120" controls>
+                              <source src="https://fra1.digitaloceanspaces.com/paacab/34874a1c93bbd74d144d6a8b589d0635" type="video/mp4">
+                            </video>
+                        </div>
+                      </li> -->
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+                <div class="row">
+                  <div class="col">
+                    <div class="card" style="margin-top: 5vh;">
+                      <div class="card-header"><h4>Update Usdt Rate</h4></div>
+                      <div class="card-body">
+                        <div class="mb-3">
+                          <label for="exampleInputText1" class="form-label">Country</label>
+                          <select id="countryList" class="form-select" aria-label="Default select example">
+                            <option value="">Select</option>
+                          </select>
+                        </div>
+                        <div class="mb-3">
+                          <label for="exampleInputText1" class="form-label">USDT Rate:</label>
+                          <input type="text" class="form-control" id="usdtRate">
+                        </div>
+                        <button onclick="updateUsdtRate()" type="button" class="btn btn-success">Update</button>
+                      </div>
+                      <div class="card-body">
+                        <ul  id="usdtList" class="list-group">
+                          <li class="list-group-item">
+                          <p class="">Country : india [INR] - USDT Rate:89.98</p>
+                          </li>
+                        </ul>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+          <div class="row">
+            <div class="col">
+              <div class="card" style="margin-top: 5vh;">
+                <div class="card-header"><h4>Forget Password Request</h4>
+                  <i onclick="forgetpasswordInit()" class="fa fa-refresh" aria-hidden="true"></i></div>
+                <div class="card-body">
+                <ul id="forgetList" class="list-group">
+                
+                </ul>
+                
+              
+              </div>
+            </div>
+          </div>
+          </div>
+            <div class="row">
+              <div class="col">
+                <div class="card" style="margin-top: 5vh;">
+                  <div class="card-header"><h4>Account Reset</h4>
+                  <div class="card-body">
+                    <div class="mb-3">
+                      <label for="exampleInputText1" class="form-label">Email</label>
+                      <input type="text" class="form-control" id="resetEmail">
+                    </div>
+                    <button onclick="resetUser()" type="button" class="btn btn-success">Re-Set</button>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+</div>
 
 
     <!-- Login -->
@@ -367,185 +396,9 @@
     <!-- Register -->
 
 
- <!-- Dashboarb -->
-
- <div style="display: none;">
-    <div style="margin-top: -15vh;" class="card mb-3">
-      <div class="card-header">
-        <div class="row">
-          <div class="col">
-            <p>Balance</p>
-            <p style="font-size: 20px; font-weight:bold;">&#x20B9; 10234.00</p>
-          </div>
-          <div class="col">
-            <button  type="button" class="btn btn-dark float-end" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">+</button>
-          </div>
-        </div>
-      </div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col" style="text-align: center;">
-            <button type="button" class="btn btn-danger"><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
-            <br><span style="font-size:xx-small;" >Withdraw</span>
-          </div>
-          <div class="col"  style="text-align: center;" >
-            <button type="button" class="btn btn-info"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
-            <br><span style="font-size:xx-small;" >Send</span>
-          </div>
-          <div class="col" style="text-align: center;">
-            <button type="button" class="btn btn-success"><i class="fa fa-qrcode" aria-hidden="true"></i></button>
-            <br><span style="font-size:xx-small;" >Secn</span>
-          </div>
-          <div class="col" style="text-align: center;">
-            <button type="button" class="btn btn-primary"><i class="fa fa-exchange" aria-hidden="true"></i></button>
-            <br><span style="font-size:xx-small;" >Convert</span>
-          </div>
-        </div>
-      </div>
-      
-    </div>
-
-    
-    <div class="row">
-      <div class="col mb-3 mb-sm-0">
-        <div style="background-color: #041b2b; color: #ccdbe6;" class="card">
-          <div class="card-body">
-            <h5 class="card-title">Euro</h5>
-            <p class="card-text">0</p>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div style="background-color: #041b2b; color: #ccdbe6;" class="card">
-          <div class="card-body">
-            <h5 class="card-title">Pound</h5>
-            <p class="card-text">0</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col mb-3 mb-sm-0">
-        <div style="background-color: #041b2b; color: #ccdbe6;" class="card">
-          <div class="card-body">
-            <h5 class="card-title">Doller</h5>
-            <p class="card-text">0</p>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div style="background-color: #041b2b; color: #ccdbe6;" class="card">
-          <div class="card-body">
-            <h5 class="card-title">Taka</h5>
-            <p class="card-text">0</p>
-          </div>
-        </div>
-      </div>
-    </div>
 
 
-
-
-    <ol class="list-group list-group-numbered list-group-item-dark">
-      <li class="list-group-item d-flex justify-content-between align-items-start mb-2">
-        <div class="ms-2 me-auto">
-          <div class="fw-bold">Subheading</div>
-          Content for list item
-        </div>
-        <span class="badge text-bg-primary rounded-pill">14</span>
-      </li>
-      <li class="list-group-item d-flex justify-content-between align-items-start mb-2">
-        <div class="ms-2 me-auto">
-          <div class="fw-bold">Subheading</div>
-          Content for list item
-        </div>
-        <span class="badge text-bg-primary rounded-pill">14</span>
-      </li>
-      <li class="list-group-item d-flex justify-content-between align-items-start mb-2">
-        <div class="ms-2 me-auto">
-          <div class="fw-bold">Subheading</div>
-          Content for list item
-        </div>
-        <span class="badge text-bg-primary rounded-pill">14</span>
-      </li>
-      <li class="list-group-item d-flex justify-content-between align-items-start mb-2">
-        <div class="ms-2 me-auto">
-          <div class="fw-bold">Subheading</div>
-          Content for list item
-        </div>
-        <span class="badge text-bg-primary rounded-pill">14</span>
-      </li>
-
-      <li class="list-group-item d-flex justify-content-between align-items-start mb-2">
-        <div class="ms-2 me-auto">
-          <div class="fw-bold">Subheading</div>
-          Content for list item
-        </div>
-        <span class="badge text-bg-primary rounded-pill">14</span>
-      </li>
-
-      <li class="list-group-item d-flex justify-content-between align-items-start mb-2">
-        <div class="ms-2 me-auto">
-          <div class="fw-bold">Subheading</div>
-          Content for list item
-        </div>
-        <span class="badge text-bg-primary rounded-pill">14</span>
-      </li>
-
-      <li class="list-group-item d-flex justify-content-between align-items-start mb-2">
-        <div class="ms-2 me-auto">
-          <div class="fw-bold">Subheading</div>
-          Content for list item
-        </div>
-        <span class="badge text-bg-primary rounded-pill">14</span>
-      </li>
-    </ol>
-    
-
-
-
-
-<div style="margin-bottom: 50px !important;" class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="offcanvasBottomLabel">Offcanvas bottom</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body small">
-    ...
-  </div>
-</div>
-    <div style="background-color: #3a5c74; width: 80% !important;" class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body">
-        <div>
-          Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
-        </div>
-        <div class="dropdown mt-3">
-          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-            Dropdown button
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#"  data-bs-dismiss="offcanvas" aria-label="Close">Something else here</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-
-
-    </div>
-
-
-
-   <!-- Dashboarb -->
-
-
-   </div>
+ 
 
    
    
