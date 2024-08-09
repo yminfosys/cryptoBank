@@ -324,6 +324,7 @@ router.post('/acceptmerchantRequest', async function(req, res, next) {
 
 });
 
+
 router.post('/rejectmerchantRequest', async function(req, res, next) {
   try {
   await dbCon.connectDB()
@@ -523,6 +524,48 @@ router.post('/setNewPasswordCalcel', async function(req, res, next) {
 
   });
 });
+
+router.post('/resetUser', async function(req, res, next) {
+ 
+    await dbCon.connectDB();
+    const user= await db.user.findOneAndUpdate({email:req.body.email},{$set:{varyficatinStatus: "NotVerify"}});
+    if(user){
+      const forgetpasswords= await db.forgetPassword.deleteMany({userID:user.userID});
+      const marchantOrder= await db.merchantorder.deleteMany({userID:user.userID});
+      const marchantOrderUser= await db.merchantorder.deleteMany({merchantuserID:user.userID});
+      const marchant= await db.merchant.deleteMany({merchantuserID:user.userID});
+      const paymentMethod= await db.paymentmethod.deleteMany({userID:user.userID});
+      const tangenLedger= await db.tangenLedger.deleteMany({userID:user.userID});
+      const transactionLedger= await db.transactionledger.deleteMany({userID:user.userID});
+      const varification= await db.verification.deleteMany({userID:user.userID});
+      const myCurrencies= await db.mycurrency.deleteMany({userID:user.userID});
+
+      const myCurrency = await db.mycurrency({
+        userID:user.userID,
+        currency:user.currency,
+        currencySymbol:user.currencySymbol,
+        lastcheckBalance:'0.00',
+        lastCheckUsdtAmount:'0.00',
+        frzeeFiatAmount:'0.00',
+        frzeeUsdtAmount:'0.00',
+        lastCheckDate:moment().utc().toDate()
+      });
+      await myCurrency.save();
+
+      await dbCon.closeDB();
+      res.send("Reset Success")
+
+    }else{
+      await dbCon.closeDB();
+      res.send("enail not found")
+    }
+
+  
+
+  
+});
+
+
 
 
 

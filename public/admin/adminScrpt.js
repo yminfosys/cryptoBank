@@ -22,6 +22,7 @@ $( document ).ready(function() {
     );
 
     getdipositRequest();
+
    
 
 })
@@ -310,6 +311,21 @@ function setNewPasswordCancel(userID,newPassword){
     $.post('/admin/setNewPasswordCalcel',{userID:userID},function(data){
         forgetpasswordInit();
     })
+}
+
+function resetUser(){
+    var email=$("#resetEmail").val().replace(/\s/g, '');
+    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/; 
+      if (reg.test(email) == false) 
+          {
+              alert('Invalid Email Address');
+              $("#resetEmail").focus();
+              return 
+          }
+    
+    $.post('/admin/resetUser',{email:email},function(data){
+       alert(data)
+    }) 
 }
 
 
