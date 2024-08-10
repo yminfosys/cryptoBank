@@ -453,7 +453,7 @@ function multiCurrency(userID){
         <li class="list-group-item" onclick="setResetTpin('+userID+')"  data-bs-dismiss="offcanvas" aria-label="Close">Set / Re-set T-Pin</li>\
         <li class="list-group-item" onclick="paymethodInit('+userID+')"  data-bs-dismiss="offcanvas" aria-label="Close">Add Payment Method</li>\
         <li class="list-group-item" onclick="orderDetails('+userID+')"  data-bs-dismiss="offcanvas" aria-label="Close">Order</li>\
-        <li class="list-group-item" onclick="merchantInit('+userID+')"  data-bs-dismiss="offcanvas" aria-label="Close">Marchant</li>\
+        <li class="list-group-item" onclick="merchantInit('+userID+')"  data-bs-dismiss="offcanvas" aria-label="Close">Merchant</li>\
         <li class="list-group-item" onclick="grievanceInit('+userID+')"  data-bs-dismiss="offcanvas" aria-label="Close">File a complaint</li>\
         <li class="list-group-item" onclick="logout()"  data-bs-dismiss="offcanvas" aria-label="Close">Logout</li>\
         </ul>\
