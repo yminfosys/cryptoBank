@@ -454,7 +454,7 @@ function multiCurrency(userID){
         <li class="list-group-item" onclick="paymethodInit('+userID+')"  data-bs-dismiss="offcanvas" aria-label="Close">Add Payment Method</li>\
         <li class="list-group-item" onclick="orderDetails('+userID+')"  data-bs-dismiss="offcanvas" aria-label="Close">Order</li>\
         <li class="list-group-item" onclick="merchantInit('+userID+')"  data-bs-dismiss="offcanvas" aria-label="Close">Marchant</li>\
-        <li class="list-group-item" onclick="grievanceInit('+userID+')"  data-bs-dismiss="offcanvas" aria-label="Close">Grievance</li>\
+        <li class="list-group-item" onclick="grievanceInit('+userID+')"  data-bs-dismiss="offcanvas" aria-label="Close">File a complaint</li>\
         <li class="list-group-item" onclick="logout()"  data-bs-dismiss="offcanvas" aria-label="Close">Logout</li>\
         </ul>\
         </div>')
@@ -1733,11 +1733,10 @@ var tt=0;
     <div class="card-body">\
       <h5 class="card-title">Merchant Criteria</h5>\
       <p class="card-text">\
-        1. <br>\
-        2. <br>\
-        3. <br>\
-        4. <br>\
-        5. <br>\
+        1. Deposit 500 usdt<br>\
+        2. Proof of funds( we accept the following documents as proof of funds. Bank statements, payslip,gift certificate,sale of property documents,loan etc<br>\
+        3. Proof of addresses document ( bank statements, credit card statement,gas electricity bill)<br>\
+        4. Then click to become the Merchant button\
       </p>\
       <button id="merchantBecome" onclick="becomemerchant('+userID+')" type="button" class="btn btn-secondary">Become a merchant</button>\
     </div>\
@@ -1928,7 +1927,7 @@ var tt=0;
     </div>\
     <div onclick="transactionHistoryInit('+userID+')" style="text-align: center; font-size: small;" >\
       <i style="font-size: 30px;" class="fa fa-file-text" aria-hidden="true"></i>\
-      <br>Transection\
+      <br>Transaction\
     </div>\
     <div onclick="crrencyBtnClick('+userID+')"  style="text-align: center; font-size: small;" >\
       <i style="font-size: 30px;" class="fa fa-btc" aria-hidden="true"></i>\
@@ -2081,7 +2080,7 @@ var tt=0;
         <li class="list-group-item" onclick="paymethodInit('+userID+')">Add Payment Method</li>\
         <li class="list-group-item" onclick="orderDetails('+userID+')" >Order</li>\
         <li class="list-group-item" onclick="merchantInit('+userID+')"  >Marchant</li>\
-        <li class="list-group-item" onclick="grievanceInit('+userID+')"  >Grievance</li>\
+        <li class="list-group-item" onclick="grievanceInit('+userID+')"  >File a complaint</li>\
         </ul>\
        </div>\
      </div> ')
