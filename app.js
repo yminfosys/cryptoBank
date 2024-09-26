@@ -10,6 +10,7 @@ var usersRouter = require('./routes/users');
 
 var adminsRouter = require('./routes/admins');
 var accountantRouter = require('./routes/accountant');
+var apiRouter = require('./routes/api');
 
 var app = express();
 
@@ -38,6 +39,8 @@ app.use('/', indexRouter);
 app.use('/user', usersRouter);
 app.use('/driver', accountantRouter);
 app.use('/admin', adminsRouter);
+app.use('/api', apiRouter);
+
 
 
 
