@@ -63,6 +63,7 @@ function logout(){
   }
   //logout();
 
+
 function addModifyCountry(){
     var countryName=$("#countryName").val().trim();
     var countryCode=$("#countryCode").val().trim();
@@ -121,7 +122,7 @@ function getdipositRequest(){
             <img onclick="imageZoom('+val.trasactionID+')" id="'+val.trasactionID+'" style="width: 20%; height: 20%;" class=" img-thumbnail float-end " src="'+val.screenSort+'" alt="scrn">\
             <P class="">Paa Txid: '+val.trasactionID+'<br>Crypto txid: '+val.cryptoTransactionID+'<br>Date: '+val.date+'</P>\
             <button onclick="acceptDipositRequest(\''+val.trasactionID+'\')" type="button" class="btn btn-success btn-sm">Accept</button>\
-            <button type="button" class="btn btn-danger btn-sm">Reject</button>\
+            <button onclick="rejectDipositRequest(\''+val.trasactionID+'\')" type="button" class="btn btn-danger btn-sm">Reject</button>\
           </li>');
         });
 
@@ -133,6 +134,12 @@ function getdipositRequest(){
 
 function acceptDipositRequest(trasactionID){
     $.post('/admin/acceptDipositRequest',{trasactionID:trasactionID},function(data){
+        getdipositRequest();
+    });
+}
+
+function rejectDipositRequest(trasactionID){
+    $.post('/admin/rejectDipositRequest',{trasactionID:trasactionID},function(data){
         getdipositRequest();
     });
 }

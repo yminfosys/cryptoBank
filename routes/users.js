@@ -403,13 +403,16 @@ router.post('/fundDeposit', cpUpload, async function(req, res, next) {
     var uid = (new Date().getTime()).toString(9)
      await dbCon.connectDB();
     const user= await db.user.findOne({userID:req.body.userID});
-    if(user){
+    var cryptoTxid= req.body.transactionid.trim();
+    const txidcp= await db.tangenLedger.findOne({cryptoTransactionID:cryptoTxid});
+
+    if(user && !txidcp){
       const newDeposit= await db.tangenLedger({
         trasactionID:uid,
         transactionType:"Deposit",
         depositAmount:req.body.depositAmount,
         cryptoCurrency:"USDT",
-        cryptoTransactionID:req.body.transactionid,
+        cryptoTransactionID:cryptoTxid,
         screenSort:req.files.fundDepositScrn[0].transforms[0].location,
         userID:user.userID,
         accountNumber:user.accountNumber,
@@ -420,7 +423,9 @@ router.post('/fundDeposit', cpUpload, async function(req, res, next) {
         });
       await newDeposit.save();
       await dbCon.closeDB();
-      res.redirect("/user?uid="+uid+"");
+      res.render('user/addfund',{status:"Transsaction ID : "+uid+"", msg:"Deposit Process will take upto 24 hr for verification of your fund"})
+    }else{
+      res.render('user/addfund',{status:"Worng Transaction ID Try Again ! ", msg:"You can't Repet your Transaction Hach"})
     }
   }catch (error) {
     console.log(error);

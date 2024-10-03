@@ -270,6 +270,45 @@ router.post('/acceptDipositRequest', async function(req, res, next) {
 
 });
 
+router.post('/rejectDipositRequest', async function(req, res, next) {
+  try {
+  await dbCon.connectDB()
+ const tangen= await db.tangenLedger.findOneAndUpdate({trasactionID:req.body.trasactionID},{$set:{status:"Reject"}});
+ //status:"Accept"
+  // const user= await db.user.findOne({userID:tangen.userID});
+  // const usdt= await db.usdtrate.findOne({country:user.country});
+  // var fiat=Number(tangen.depositAmount) * Number(usdt.usdtRate);
+  // var uid = (new Date().getTime()).toString(9)
+  // console.log(usdt);
+  // console.log(fiat.toFixed(2));
+  // const transLager= await db.transactionledger({
+  //   userID:user.userID,
+  //   trasactionID:uid,
+  //   /////Transact from
+  //   accountFrom:'',
+  //   userNameFrom:"Top Up",
+  //   /////Transact to/////
+  //   accountTo:user.accountNumber,
+  //   userNameTo:user.userName,
+  //   transactionType:"Deposit",
+  //   depositFaitAmount:fiat,
+  //   dipositusdtAmount:tangen.depositAmount,
+  //   cryptoCurrency:"USDT",
+  //   fiatCurrency:user.currency,
+  //   remarks:" Deposit for top-up account",
+  //   transactionStatus:"Success"
+  //  }) 
+  //  await transLager.save();
+   await dbCon.closeDB();
+    res.json(tangen);
+
+} catch (error) {
+  console.log(error);
+  return error;
+}
+
+});
+
 
 
 router.post('/getWithdrawlRequest', async function(req, res, next) {
