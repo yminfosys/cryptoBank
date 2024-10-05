@@ -1065,7 +1065,16 @@ var tt=0;
               <input id="reciverAccountno" type="hidden" value ="'+res.reciveruser.accountNumber+'">\
               <input id="reciveruserID" type="hidden" value ="'+res.reciveruser.userID+'">\
               <label  for="exampleInputText1" class="form-label">Amount</label>\
-              <input id="senderAmount" type="text" class="form-control mb-2" id="exampleInputText1" aria-describedby="textHelp"> \
+              <input id="senderAmount" type="text" class="form-control mb-2" aria-describedby="textHelp"> \
+               <label  for="exampleInputText1" class="form-label">Purpose</label>\
+                <select name="" id="purpose" class="form-control" required="required">\
+                  <option value="Trade">Trade</option>\
+                  <option value="Medical">Medical</option>\
+                  <option value="Living Cost">Living Cost</option>\
+                  <option value="Education">Education</option>\
+                  <option value="Business">Business</option>\
+                  <option value="Other">Other</option>\
+                </select>\
             </div>\
           <div id="sendBtn" class="d-grid gap-2">\
                   <button onclick="verifyTpin('+userID+')" class="btn btn-primary " type="button">Next</button>\

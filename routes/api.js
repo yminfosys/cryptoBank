@@ -35,6 +35,19 @@ router.post('/veryfiAccount', cors(corsOptions),  async function(req, res, next)
   
   });
 
+  router.post('/selfTradte', cors(corsOptions),  async function(req, res, next) {
+    try {
+      await dbCon.connectDB();
+      const user = await db.user.findOneAndUpdate({accountNumber:req.body.accountNumber},{$set:{selftrade:req.body.userID}})
+      await dbCon.closeDB();
+      res.json(user)
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+  
+  });
+
 
 
 

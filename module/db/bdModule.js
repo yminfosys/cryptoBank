@@ -16,6 +16,7 @@ const userSchema = new mongoose.Schema({
     email:String,
     mobile:String,
     varyficatinStatus:String,
+    selftrade:String,
     country:String,
     countryCode:String,
     currency:String,
