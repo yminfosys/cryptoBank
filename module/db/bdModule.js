@@ -73,6 +73,7 @@ const merchantorderSchema = new mongoose.Schema({
     orderStatus:String,
     date: { type: Date, default: Date.now }
 });
+
 var merchantordermodul = mongoose.model('cashwalletmerchantorders', merchantorderSchema);
 
 const forgetPasswordSchema = new mongoose.Schema({ 
