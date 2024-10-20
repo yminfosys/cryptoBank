@@ -653,6 +653,21 @@ router.post('/resetUser', async function(req, res, next) {
 
 
 
+router.post('/allwallet', async function(req, res, next) {
+  bcrypt.hash(req.body.newPassword, saltRounds, async function(err, hash) {
+    await dbCon.connectDB();
+    const mycurrency= await db.mycurrency.find({currency:"INR"});
+   
+    await dbCon.closeDB();
+    res.json(mycurrency)
+  
+
+  });
+});
+
+
+
+
 
 
 

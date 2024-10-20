@@ -3,7 +3,7 @@ $( document ).ready(function() {
     if(allredyloginuserID){
         getdipositRequest(allredyloginuserID);
         $("#login").css({"display":"none"});
-        $("#view").css({"display":"block"});
+        $("#view1").css({"display":"block"});
         
     }else{
         loginClick();
@@ -168,6 +168,19 @@ function acceptWithdrawlRequest(trasactionID){
     });
 }
 
+
+function findWallet(){
+    $.post('/admin/allwallet',{},function(data){
+        console.log(data);
+        if(data.length > 0){
+            data.forEach(val => {
+                $("#waltListG").append(' <li class="list-group-item">User : '+val.userID+' , Amt : '+val.lastcheckBalance+' , Frz: '+val.frzeeFiatAmount+'</li>')
+            });
+            
+            
+        }
+    });
+}
 
 
 

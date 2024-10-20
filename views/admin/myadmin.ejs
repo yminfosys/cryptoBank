@@ -69,8 +69,49 @@
         </div>
     </div>
     
+    <div id="view"  class="container-fluid" style="margin-top: 10vh; display: non;" >
+      <div class="row">
+        <div class="col-4 mb-3">
+          <div class="card" onclick = "findWallet()">
+            <div class="card-body" style="height: 11vh; background-image: linear-gradient(#FFD700,#dc6714bd); color: #6617dc; text-align: center;">
+              <span><i style="font-size: 25px;" class="fa fa-envelope" aria-hidden="true"></i></span>
+              <p class="card-text text-center" style="font-size:small;  font-weight: bold; ">Add New Country</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 mb-3">
+          <div class="card" onclick = "wellcomLetter(\''+userID+'\')">
+            <div class="card-body" style="height: 11vh; background-image: linear-gradient(#FFD700,#dc6714bd); color: #6617dc; text-align: center;">
+              <span><i style="font-size: 25px;" class="fa fa-envelope" aria-hidden="true"></i></span>
+              <p class="card-text text-center" style="font-size:small;  font-weight: bold; ">Trns Charges</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 mb-3">
+          <div class="card" onclick = "wellcomLetter(\''+userID+'\')">
+            <div class="card-body" style="height: 11vh; background-image: linear-gradient(#FFD700,#dc6714bd); color: #6617dc; text-align: center;">
+              <span><i style="font-size: 25px;" class="fa fa-envelope" aria-hidden="true"></i></span>
+              <p class="card-text text-center" style="font-size:small;  font-weight: bold; ">Fund Rec Wallte</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
-   <div id="view"  class="container-fluid" style="margin-top: 10vh; display: none;" >
+      <div class="card" style="">
+         <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <h6 class="card-subtitle mb-2 text-muted ">Card subtitle</h6>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <ul id="waltListG" class="list-group" style="height: 30vh; overflow-y: auto;">
+            <li class="list-group-item">An item</li>
+          </ul>
+        </div>
+      </div>
+
+
+
+    </div>
+   <div id="view1"  class="container-fluid" style="margin-top: 10vh; display: none;" >
         <div class="row">
           <div class="col">
             <div class="card" >
