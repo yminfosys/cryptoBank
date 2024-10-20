@@ -173,8 +173,10 @@ function findWallet(){
     $.post('/admin/allwallet',{},function(data){
         console.log(data);
         if(data.length > 0){
+            var total= 0;
             data.forEach(val => {
-                $("#waltListG").append(' <li class="list-group-item">User : '+val.userID+' , Amt : '+val.lastcheckBalance+' , Frz: '+val.frzeeFiatAmount+'</li>')
+                total= Number(total) + Number(val.lastcheckBalance)
+                $("#waltListG").append(' <li style="color: azure;" class="list-group-item">User : '+val.userID+' , Amt : '+val.lastcheckBalance+' , Frz: '+val.frzeeFiatAmount+', T: '+total+'</li>')
             });
             
             
