@@ -1122,6 +1122,7 @@ var tt=0;
   }
 
   function sentToReceverAccount(userID,charge){
+
     var senderAmount=$("#senderAmount").val();
     var senderCurrency=$("#senderCurrency").val();
 
@@ -1137,7 +1138,7 @@ var tt=0;
           return 
       }
 
-    
+    $("#sendBtn").html("");
     $.post('/user/sentAmountToReceverAccount',{
       userID:userID,
       senderAmount:senderAmount,

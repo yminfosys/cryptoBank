@@ -48,6 +48,16 @@ const merchantSchema = new mongoose.Schema({
     countryCode:String,
     currency:String,
     currencySymbol:String,
+
+    
+    depositOrderTime:String,
+    depositlimitFrom:String,
+    depositlimitTo:String,
+    deposittotalFund:String,
+    depositonlineOffline:Number,
+    depositusdtRate:String,
+
+
     date: { type: Date, default: Date.now },
 });
 var merchantmodul = mongoose.model('cashwalletmerchants', merchantSchema);
