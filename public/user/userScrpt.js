@@ -1138,7 +1138,7 @@ var tt=0;
           return 
       }
 
-    $("#sendBtn").html("");
+    $("#sendBtn").css({"display":"none"});
     $.post('/user/sentAmountToReceverAccount',{
       userID:userID,
       senderAmount:senderAmount,
@@ -1194,7 +1194,9 @@ var tt=0;
       </div>\
     </div>')
       }else{
-        alert("Transaction PIN (T-PIN) Varification Fail")
+        alert("Transaction PIN (T-PIN) Varification Fail");
+        $("#sendBtn").css({"display":"block"});
+
       }
 
     })
