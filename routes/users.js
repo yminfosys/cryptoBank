@@ -1320,6 +1320,37 @@ router.post('/mycurrencyHistory', async function(req, res, next) {
 
 
 
+// Delete Custome Account
+router.get('/delete',  function(req, res, next) {
+  res.render( 'user/delete'); 
+});
+
+router.post('/delete', async function(req, res, next) {
+ 
+  await dbCon.connectDB();
+  const user = await db.user.findOne({accountNumber:req.body.accountno});
+  if (user) {
+      bcrypt.compare(req.body.password, user.password, function(err, pass) {
+          console.log(pass)
+          if (pass) {
+            db.user.deleteMany({mobileNumber: req.body.mobile}, async function(err, use){
+                  res.send('Your Account Deleted Successfully');
+                  await dbCon.closeDB();
+              });
+              
+          } else {
+              //////Worng Password//////
+              res.send('Wrngpassword')
+                      }
+                  });
+              }else{
+                  res.send('Worng account Number')
+              }
+
+      });
+ 
+
+
 
 
 
