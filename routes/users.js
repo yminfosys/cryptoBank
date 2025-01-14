@@ -101,6 +101,17 @@ router.get('/', async function(req, res, next) {
 });
 
 
+//   Account verify////
+router.get('/verify', async function(req, res, next) {
+  try {
+    var allredylogin=req.cookies.userID
+    res.render('user/userVeryfy',{allredylogin:allredylogin})
+  }catch (error) {
+    console.log(error);
+    return error;
+  }
+  
+});
 
 router.post('/getCountryList', async function(req, res, next) {
   try {

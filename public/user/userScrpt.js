@@ -423,7 +423,7 @@ function multiCurrency(userID){
           verifyStatus='<span style="color: green;"><strong>Verified</strong></span>'
         }else{
           if(user.varyficatinStatus=="NotVerify"){
-            verifyStatus='<span onclick="verifyNow(\''+userID+'\')" data-bs-dismiss="offcanvas" style="color: red;"><strong><a href="tel:+6494461709">Verify now</a></strong></span>'
+            verifyStatus='<span onclick="verifyNowinit(\''+userID+'\')" data-bs-dismiss="offcanvas" style="color: red;"><strong>Verify now</strong></span>'
           }
         }
 
@@ -1514,7 +1514,13 @@ var tt=0;
 
 
 
+
 /////////Account Verification///////
+
+function verifyNowinit(){
+  window.location.href = "/user/verify";
+}
+
   function verifyNow(userID){
     $("#topBacground").css({"display":"none"});
     $("#view").html(' <form id="formIdkyc" onsubmit="desebleSubmitBtn()" action="/user/kycUpload"  enctype="multipart/form-data" method="post">\
