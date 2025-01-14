@@ -423,7 +423,7 @@ function multiCurrency(userID){
           verifyStatus='<span style="color: green;"><strong>Verified</strong></span>'
         }else{
           if(user.varyficatinStatus=="NotVerify"){
-            verifyStatus='<span onclick="verifyNow(\''+userID+'\')" data-bs-dismiss="offcanvas" style="color: red;"><strong>Verify now</strong></span>'
+            verifyStatus='<span onclick="verifyNow(\''+userID+'\')" data-bs-dismiss="offcanvas" style="color: red;"><strong><a href="tel:+6494461709">Verify now</a></strong></span>'
           }
         }
 
@@ -1315,7 +1315,7 @@ var tt=0;
             <inpun id="convertCurrencySymbol" type="hidden" value=""/>\
           </div>\
           <div class="d-grid gap-2 mb-3">\
-            <button id="verifyBtn" onclick="convertVerufy()" style="display:none; " class="btn btn-warning">Verify</button>\
+            <button id="verifyBtn" onclick="convertVerufy()" style="display:none; " class="btn btn-warning"><a href="">Verify</a></button>\
           </div>\
          <div id="tPinbtnLable" style="display:none;" class="mb-3">\
           <label style="width: 50%; margin-left: 25%;" class="form-label text-center">T-Pin</label>\
