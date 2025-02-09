@@ -2387,15 +2387,16 @@ function verifyNowinit(){
       </div>\
       <div class="card-body">\
        <ul class="list-group mt-3">\
-        <li class="list-group-item" onclick="setResetTpin('+userID+')" >Set / Re-set T-Pin</li>\
-        <li class="list-group-item" onclick="paymethodInit('+userID+')">Add Payment Method</li>\
-        <li class="list-group-item" onclick="orderDetails('+userID+')" >Order</li>\
-        <li class="list-group-item" onclick="merchantInit('+userID+')"  >Marchant</li>\
-        <li class="list-group-item" onclick="grievanceInit('+userID+')"  >File a complaint</li>\
+        <li class="list-group-item" onclick="SetPin('+userID+')" >Set / Re-set T-Pin</li>\
         </ul>\
        </div>\
      </div> ')
   }
+
+function SetPin(userID){
+  closeFooterbtn()
+  setResetTpin(userID)
+}
 
   function helpBtnClick(userID){
     $("#view1").css({"display":"block"});
