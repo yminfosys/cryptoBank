@@ -300,7 +300,7 @@ function logout(){
       </a>\
     </div>\
     \
-    <div style="background-color: #3a5c74; color: antiquewhite; width: 80% !important;"  class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">\
+    <div style="background-color: #3a5c74; color: antiquewhite; width: 90% !important;"  class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">\
       <div class="offcanvas-header">\
         <h5 class="offcanvas-title" id="offcanvasExampleLabel">Profile</h5>\
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>\
@@ -338,8 +338,8 @@ function logout(){
               <br><span style="font-size:xx-small;" >Send</span>\
             </div>\
             <div class="col" style="text-align: center;">\
-              <button type="button" class="btn btn-success"><i class="fa fa-qrcode" aria-hidden="true"></i></button>\
-              <br><span style="font-size:xx-small;" >Scan</span>\
+              <button onclick="scanInit('+userID+')" type="button" class="btn btn-success"><i class="fa fa-qrcode" aria-hidden="true"></i></button>\
+              <br><span id="q12" style="font-size:xx-small;" >Scan</span>\
             </div>\
             <div class="col" style="text-align: center;">\
               <button onclick="currencyConvert('+userID+')" type="button" class="btn btn-primary"><i class="fa fa-exchange" aria-hidden="true"></i></button>\
@@ -352,7 +352,7 @@ function logout(){
     <div style="height: 70vh !important;" class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">\
   <div class="offcanvas-header">\
     <h5 class="offcanvas-title" id="offcanvasBottomLabel">Add Fund</h5>\
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>\
+    <button type="button" onclick="closeoffcanvasBottom('+userID+')" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>\
   </div>\
     <div id="offcanvasDeposit" class="offcanvas-body small">\
     </div>\
@@ -445,6 +445,8 @@ function multiCurrency(userID){
                 <li class="list-group-item">\
                   <span>Account Type:</span>\
                   <p class="mt-2">Crypto</p>\
+                  <div id="qrcode"></div>\
+                  <div onclick="shareQRCode('+user.accountNumber+')" class="share-btn" ><i style="font-size: large;" class="fa fa-share-alt" aria-hidden="true"></i></div>\
                 </li>\
               </ul>\
             </div>\
@@ -531,7 +533,7 @@ function multiCurrency(userID){
                 <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">\
                   <div class="accordion-body">\
                   <ul class="list-group">\
-                    <li class="list-group-item" onclick="abcd('+userID+')">Bank Merchant</li>\
+                    <li class="list-group-item" onclick="bankMerchent('+userID+')">Bank Merchant</li>\
                     <li class="list-group-item" onclick="abcd('+userID+')">Cash Merchant</li>\
                 </ul>\
                   </div>\
@@ -541,6 +543,7 @@ function multiCurrency(userID){
             </div>');
             transectonList(userID);
             footer(userID);
+            qrcode(user.accountNumber);
           }
         });
        }
@@ -595,9 +598,156 @@ function multiCurrency(userID){
             //   </div>\
             // </div>\
 
+  function bankMerchent(id){
+   // alert(id)
+    //$("#offcanvasBottom").css({"background-color" : "#000000 !important"})
+    $('#offcanvasBottom').attr('style', 'height: 90vh !important');
+    $("#offcanvasDeposit").html('<ul  class="list-group">\
+      <li id="" class="list-group-item mb-3" style="height: 17vh; background-color: rgb(50, 63, 63); border: none;">\
+        <p style="font-size: small; color: #797575 !important;" class="text-dark">\
+          <span><i class="fa fa-user-circle" aria-hidden="true"></i></span> &nbsp; \
+          <span style="font-size: larger; color: #fffbfb;"> Sukanta sardar </span> &nbsp;\
+          <span style="color: #f1de0b;"><i class="fa fa-check-square" aria-hidden="true"></i></span>\
+          <br><span style="font-size: larger; color: #fffbfb;"> Post Code : 700126 </span> &nbsp; \
+          <br><span><i class="fa fa-hand-pointer-o" aria-hidden="true"></i> 100%</span> &nbsp; \
+          <span><i class="fa fa-clock-o" aria-hidden="true"></i> 15 min</span>\
+          <span class="float-end">Cash Collections</span>\
+          <br><span style="font-size: medium; color:rgb(141, 119, 119);">0.2 %</span>\
+          <span class="float-end" > <button onclick="marchantOrdrtInit()" type="button" class="btn btn-sm btn-success">Buy</button></span>\
+          <br> Limit <span style="color: #fffbfb;">&#8377;2000.00 - &#8377;100000.00</span>\
+          <input type="hidden" id="userID" value="1">\
+        </p>\
+        <div id="marchantID" style="color: #fffbfb; display: none;" >\
+          <span>Available Balance : &#8377; 120000</span>\
+          <div class="row">\
+            <label for="exampleInputText1" class="form-label">Amount</label>\
+            <div class="col">\
+              <input  type="text" class="form-control" id="exampleInputText1" aria-describedby="textHelp">\
+            </div>\
+            <div class="col">\
+              <button onclick="createMarchantOrder()" type="button" class="btn btn-sm btn-success float-end">Send</button>\
+            </div>\
+          </div>\
+        </div>\
+      </li>\
+    </ul>');
+  }           
+
   function abcd(id){
-    alert(id)
-  }          
+    $('#offcanvasBottom').attr('style', 'height: 90vh !important');
+    $("#offcanvasDeposit").html('<ul  class="list-group">\
+      <li id="" class="list-group-item mb-3" style="height: 17vh; background-color: rgb(50, 63, 63); border: none;">\
+        <p style="font-size: small; color: #797575 !important;" class="text-dark">\
+          <span><i class="fa fa-user-circle" aria-hidden="true"></i></span> &nbsp; \
+          <span style="font-size: larger; color: #fffbfb;"> Sukanta sardar </span> &nbsp;\
+          <span style="color: #f1de0b;"><i class="fa fa-check-square" aria-hidden="true"></i></span>\
+          <br><span style="font-size: larger; color: #fffbfb;"> Post Code : 700126 </span> &nbsp; \
+          <br><span><i class="fa fa-hand-pointer-o" aria-hidden="true"></i> 100%</span> &nbsp; \
+          <span><i class="fa fa-clock-o" aria-hidden="true"></i> 15 min</span>\
+          <span class="float-end">Cash Collections</span>\
+          <br><span style="font-size: medium; color:rgb(141, 119, 119);">0.2 %</span>\
+          <span class="float-end" > <button onclick="marchantOrdrtInit()" type="button" class="btn btn-sm btn-success">Buy</button></span>\
+          <br> Limit <span style="color: #fffbfb;">&#8377;2000.00 - &#8377;100000.00</span>\
+          <input type="hidden" id="userID" value="1">\
+        </p>\
+        <div id="marchantID" style="color: #fffbfb; display: none;" >\
+          <span>Available Balance : &#8377; 120000</span>\
+          <div class="row">\
+            <label for="exampleInputText1" class="form-label">Amount</label>\
+            <div class="col">\
+              <input  type="text" class="form-control" id="exampleInputText1" aria-describedby="textHelp">\
+            </div>\
+            <div class="col">\
+              <button onclick="createMarchantOrder()" type="button" class="btn btn-sm btn-success float-end">Send</button>\
+            </div>\
+          </div>\
+        </div>\
+      </li>\
+    </ul>');
+  }  
+  
+ function closeoffcanvasBottom(userID){
+  $('#offcanvasBottom').attr('style', 'height: 70vh !important');
+  $.post('/user/getDiposit',{},function(diposit){
+    if(diposit){
+      $("#offcanvasDeposit").html('<div class="row">\
+     <div class="accordion accordion-flush" id="accordionFlushExample">\
+        <div class="accordion-item">\
+          <h2 class="accordion-header">\
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">\
+              Deposit By USDT\
+            </button>\
+          </h2>\
+          <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">\
+            <div class="accordion-body">\
+            \
+            <div class="col">\
+        <div class="card" style="">\
+          <img style="width: 50%; margin-left: 25%;" src="'+diposit.qrCode+'" class="card-img-top" alt="QRCODE">\
+          <div class="card-body">\
+            <div class="row">\
+              <div  class="col-10">\
+                <span>Network ></span>\
+                <p>BNB Smart Chain (BEP20)</p>\
+              </div>\
+              <div  class="col ">\
+                <i class="fa fa-exchange" aria-hidden="true"></i>\
+              </div>\
+            </div>\
+            <div class="row">\
+              <div  class="col-10">\
+                <span>Deposit Address ></span>\
+                <p>'+diposit.virtualAddress+'</p>\
+              </div>\
+              <div onclick="copyContent(\''+diposit.virtualAddress+'\')" class="col ">\
+                <i class="fa fa-clone" aria-hidden="true"></i>\
+              </div>\
+            </div>\
+            <form id="formDeposit" onsubmit="depositSubmit()" action="/user/fundDeposit"  enctype="multipart/form-data" method="post">\
+                <div class="mb-3">\
+                  <label for="exampleInputText1" class="form-label">Transaction ID:</label>\
+                  <input type="text" class="form-control" name="transactionid" aria-describedby="textHelp">\
+                </div>\
+                <div class="mb-3">\
+                  <label for="exampleInputText1" class="form-label">Deposit USDT Amount: </label>\
+                  <input type="text" class="form-control" name="depositAmount" aria-describedby="textHelp">\
+                </div>\
+                <div class="mb-3">\
+                  <label for="formFile" class="form-label">Upload Trasactin screen sort:</label>\
+                  <input class="form-control" type="file"  name="fundDepositScrn">\
+                </div>\
+                <input type="hidden" name="userID" value="'+userID+'"/>\
+                <div id="fundButton" class="d-grid gap-2">\
+                  <button class="btn btn-primary" type="submit">Submit</button>\
+                </div>\
+              </form>\
+          </div>\
+        </div>\
+      </div>\
+            \
+            </div>\
+          </div>\
+        </div>\
+        <div class="accordion-item">\
+          <h2 class="accordion-header">\
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">\
+              Deposit By Merchant\
+            </button>\
+          </h2>\
+          <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">\
+            <div class="accordion-body">\
+            <ul class="list-group">\
+              <li class="list-group-item" onclick="bankMerchent('+userID+')">Bank Merchant</li>\
+              <li class="list-group-item" onclick="abcd('+userID+')">Cash Merchant</li>\
+          </ul>\
+            </div>\
+          </div>\
+        </div>\
+      </div>\
+      </div>');
+    }
+  });
+  }
 
   function transectonList(userID){
     $("#last10Transaction").html('');
@@ -1066,8 +1216,67 @@ var tt=0;
         
     }
   }
+/////////Link With Android Studio////////
+  function scanInit(userID){
+    Android.showToast(userID);
+  }
 
-  function sendMoneylInt(userID){
+  function onScanResult(accountno) {
+    $("#q12").html(''+accountno+'')
+    //alert("ok");
+    // console.log("Received data:", data);
+   
+    $.post('/user/getUserIDcookey',{},function(userID){
+      sendMoneylInt(userID,accountno);
+
+    })
+
+}
+
+
+
+
+function qrcode(accountNumber){
+  const qrCode  = new QRCodeStyling({
+    width: 250,
+    height: 250,
+    data: ''+accountNumber+'',
+    dotsOptions: { color: "#000", type: "rounded" },
+    backgroundOptions: { color: "#fff" },
+    imageOptions: { crossOrigin: "PAA", margin: 5 }
+  });
+  
+qrCode.append(document.getElementById("qrcode"));
+}
+
+
+function shareQRCode(accountNo) {
+  const qrCode  = new QRCodeStyling({
+    width: 256,
+    height: 256,
+    data: ''+accountNo+'',
+    dotsOptions: { color: "#000", type: "rounded" },
+    backgroundOptions: { color: "#fff" },
+    imageOptions: { crossOrigin: "PAA", margin: 5 }
+  });
+
+
+  qrCode.getRawData("png").then((blob) => {
+      let reader = new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onloadend = function () {
+          let base64data = reader.result.split(",")[1]; 
+          Android.shareQRCode(base64data);
+      };
+  });
+}
+
+
+
+
+
+
+  function sendMoneylInt(userID,account){
 
     $.post('/user/getUser',{userID:userID},function(user){
       if(user.varyficatinStatus=="Verified"){
@@ -1095,6 +1304,11 @@ var tt=0;
           <div id="sendaccountBody" class="card-body">\
         </div>')
       getMycurrency(userID);
+
+      ///////Account No put from Android//////
+      if(account){
+        $("#reciverAccountNo").val(account);
+      }
 
       }else{
         alert("You Need to Your Verify Your Account ")

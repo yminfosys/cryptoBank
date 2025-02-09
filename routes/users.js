@@ -693,6 +693,18 @@ router.post('/setTpin', async function(req, res, next) {
 }
 })
 
+router.post('/getUserIDcookey', async function(req, res, next) {
+  try {
+    var userID= req.cookies.userID
+
+  res.send(userID);
+  
+}catch (error) {
+  console.log(error);
+  return error;
+}
+})
+
 
 router.post('/senderGetMycurrency', async function(req, res, next) {
   try {
