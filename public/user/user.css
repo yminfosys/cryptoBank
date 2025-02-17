@@ -25,3 +25,66 @@
   cursor: pointer;
   float: right;
 }
+
+#qrCamera{
+  
+    margin-top: 9vh;
+    height: 100vh;
+    display: none;
+    background-color: #773a4f; 
+    display: non;
+   
+
+}
+
+#reader {
+  position: absolute;
+  top: 10vh;
+  width: 100%;        
+  max-width: 80vw;   /* Max limit */
+  position: relative;
+  border: #fff solid 1px;
+  border-radius: 1px;
+  margin-left: 9vw;
+  
+  
+}
+
+#galaryIcon{
+  position: absolute;
+  left: 80vw;
+  top: 20vh;
+ width: 20px;
+ height: 20px;
+ 
+  /* transform: translateX(-50%);
+  background: #c1d1e9;
+  color: rgb(221, 199, 199);
+  padding: 5px 15px;
+  border-radius: 5px;
+  cursor: pointer; */
+
+}
+
+/*
+#qr-file {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  opacity: 0;
+  cursor: pointer;
+}
+.file-label {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0d6efd;
+  color: white;
+  padding: 5px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+ */

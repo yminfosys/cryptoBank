@@ -1218,11 +1218,12 @@ var tt=0;
   }
 /////////Link With Android Studio////////
   function scanInit(userID){
-    Android.showToast(userID);
+    Webscan();
+   // Android.showToast(userID);
   }
 
   function onScanResult(accountno) {
-    $("#q12").html(''+accountno+'')
+    //$("#q12").html(''+accountno+'')
     //alert("ok");
     // console.log("Received data:", data);
    
@@ -1233,6 +1234,95 @@ var tt=0;
 
 }
 
+let html5QrCode;
+function Webscan(){
+ 
+  const qrCodeRegionId = "reader";
+  $("#qrCamera").css({"display":"block"});
+  $("#view").css({"display":"none"});
+  $("#view1").css({"display":"none"});
+  $("#topBacground").css({"display":"none"});
+  
+      
+      if (!html5QrCode) {
+        html5QrCode = new Html5Qrcode(qrCodeRegionId);
+    }
+
+      html5QrCode.start(
+        
+          { facingMode: "environment" }, // Use rear camera
+          { fps: 10, qrbox: 200 },
+          (decodedText, decodedResult) => {
+              // document.getElementById("qr-result").querySelector("span").textContent = decodedText;
+               console.log(decodedText);
+               
+
+              // Stop scanning once QR code is detected
+              if (html5QrCode) {
+
+              html5QrCode.stop().then(() => {
+                  console.log("QR Scanner stopped.");
+              }).catch(err => console.error("Error stopping scan: ", err));
+            }
+
+              // Return the scanned QR code data (Modify this function as needed)
+              handleQRCodeScanned(decodedText);
+          }
+      ).catch(err => console.error("Error starting scan: ", err));
+  
+
+}
+
+
+function qrcodeFromGalary(){
+     ////JS QR ///
+
+     document.getElementById("qr-file").addEventListener("change", function (event) {
+      $("#galaryIcon").html('<i class="fa fa-picture-o" aria-hidden="true"></i><input  style=" visibility: hidden;" onclick="qrcodeFromGalary()" type="file" id="qr-file" accept="image/*">')
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function () {
+          const img = new Image();
+          img.src = reader.result;
+          img.onload = function () {
+              const canvas = document.createElement("canvas");
+              const ctx = canvas.getContext("2d");
+              canvas.width = img.width;
+              canvas.height = img.height;
+              ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+              const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+              const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+              if (code) {
+                  // document.getElementById("qr-result").querySelector("span").textContent = code.data;
+                  // console.log("QR Code Detected:", code.data);
+                  // alert("Scanned QR Code: " + code.data);
+                  handleQRCodeScanned(code.data);
+                  html5QrCode.stop()
+                  
+              } else {
+                  alert("No QR code found in the image.");
+              }
+          };
+      };
+      reader.readAsDataURL(file);
+      
+  });
+}
+
+function handleQRCodeScanned(qrData) {
+  // Here you can send the data to the server, store it, or perform an action
+  //alert("Scanned QR Code: " + qrData);
+  $("#qrCamera").css({"display":"none"});
+  $("#view").css({"display":"block"});
+  $("#topBacground").css({"display":"block"});
+  onScanResult(qrData)
+ 
+  
+}
 
 
 
@@ -1266,7 +1356,7 @@ function shareQRCode(accountNo) {
       reader.readAsDataURL(blob);
       reader.onloadend = function () {
           let base64data = reader.result.split(",")[1]; 
-          Android.shareQRCode(base64data);
+          //Android.shareQRCode(base64data);
       };
   });
 }
