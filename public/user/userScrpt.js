@@ -1,7 +1,10 @@
 $( document ).ready(function() {
     var allredyloginuserID=$("#allredyloginuserID").val();
     if(allredyloginuserID){
+      logout();
+      return;
       getUserprofile(allredyloginuserID);
+     
         
     }else{
         loginClick();
@@ -53,33 +56,45 @@ $( document ).ready(function() {
 
 
 function loginClick(){
-    $("#view").html('<div class="row mb-3">\
-    <div style="text-align: center; margin-top: 15vh;" class="col">\
-      <div style="font-size: 35px; font-weight:bold;">Log in</div>\
-      <span>Fill the form to log in</span>\
-    </div>\
-  </div>\
-  <div class="card mb-3" style="background-color: #ccdbe6;">\
-    <div class="card-body">\
-      <div class="mb-3">\
-        <label for="loginEmail" class="form-label">Email address</label>\
-        <input style=" text-decoration: none;"  type="email" class="form-control" id="loginEmail" aria-describedby="emailHelp">\
-      </div>\
-      <div class="mb-3">\
-        <label for="loginPassword" class="form-label ">Password</label>\
-        <input type="password" class="form-control" id="loginPassword">\
-      </div>\
-    </div>\
-  </div>\
-  <p onclick="regClick()" class="float-start">Register</p>\
-  <p onclick="forgetpassword()" class="float-end">Forget Password</p>\
-  <div class="fixed-bottom">\
-      <div class="container-fluid mb-3">\
-        <div id="loginBtn" class="d-grid gap-2">\
-          <button onclick="loginProcess()" class="btn btn-primary " type="button">Login</button>\
-        </div>\
-      </div>\
-  </div>');
+
+  //   $("#view").html('<div class="row mb-3">\
+  //   <div style="text-align: center; margin-top: 15vh;" class="col">\
+  //     <div style="font-size: 35px; font-weight:bold;">Log in</div>\
+  //     <span>Fill the form to log in</span>\
+  //   </div>\
+  // </div>\
+  // <div class="card mb-3" style="background-color: #ccdbe6;">\
+  //   <div class="card-body">\
+  //     <div class="mb-3">\
+  //       <label for="loginEmail" class="form-label">Email address</label>\
+  //       <input style=" text-decoration: none;"  type="email" class="form-control" id="loginEmail" aria-describedby="emailHelp">\
+  //     </div>\
+  //     <div class="mb-3">\
+  //       <label for="loginPassword" class="form-label ">Password</label>\
+  //       <input type="password" class="form-control" id="loginPassword">\
+  //     </div>\
+  //   </div>\
+  // </div>\
+  // <p onclick="regClick()" class="float-start">Register</p>\
+  // <p onclick="forgetpassword()" class="float-end">Forget Password</p>\
+  // <div class="fixed-bottom">\
+  //     <div class="container-fluid mb-3">\
+  //       <div id="loginBtn" class="d-grid gap-2">\
+  //         <button onclick="loginProcess()" class="btn btn-primary " type="button">Login</button>\
+  //       </div>\
+  //     </div>\
+  // </div>');
+
+  $("#view").html(`<!-- System Update Card -->
+<div class="card text-white bg-warning mb-3" style="max-width: 100%; position: fixed; top: 0; left: 0; right: 0; z-index: 1050;">
+  <div class="card-body text-center">
+    <h5 class="card-title">System Update</h5>
+    <p class="card-text">Our system is being updated for better performance. Please bear with us.</p>
+    <button class="btn btn-dark" onclick="document.getElementById('updateCard').style.display='none'">OK</button>
+  </div>
+</div>`)
+
+
 }
 
 function regClick(){
@@ -2001,161 +2016,549 @@ function verifyNowinit(){
     }
    
   }
-  function onlineOffline(userID){
-    var  onoff=0;
-    var aa=$("#onoff").prop('checked')
-      
-      if(aa){
-        //////operation for true 
-       //console.log("ture  onlone");
-        onoff=1;
-        $("#onOffText").html('Online');
-      }else{
-       // console.log("false  offline");
-        onoff=0;
-        $("#onOffText").html('Offline');
-        
-      }
-    $.post('/user/onlineOfflinemMerchant',{userID:userID, onoff: onoff},function(data){
-
-    });
-  }
+ 
   
 
-  function merchantInit(userID){
-    $("#topBacground").css({"display":"none"});
-    $.post('/user/getmerchant',{userID:userID},function(data){
-     if(data){
-        //console.log(data)
-        if(data.merchantStatus=="Accept"){
-          $("#view").html('<div class="card"  style="margin-top: 10vh; margin-bottom: 10vh; height: 80vh; ">\
-          <div class="card-header">\
-            <button onclick="closeWithdral()" type="button" class="btn-close float-end"></button>\
-           <h3>Merchant</h3> \
-           <p onclick="oofon()">'+data.merchantNickname+' <span onclick ="editmerchantNickname('+userID+')" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></span><br>'+data.merchantType+'</p>\
-           <div style="margin-top: -25px;" class="form-check form-switch">\
-            <span id="onOffText" style="margin-left: 24vh;">Online</span>\
-            <input onclick ="onlineOffline('+userID+')" style="" class="form-check-input float-end" type="checkbox" role="switch" id="onoff">\
-          </div>\
-          </div>\
-        <div class="card-body">\
-          <div class="row" style="height: 30vh; overflow-y: auto; font-size: x-small;">\
-              <div class="col">\
-                 <div class="mb-3">\
-                  <label  class="form-label">Total Amount</label>\
-                  <input type="text" class="form-control" id="mrchTotalAmt" value="'+data.totalFund+'">\
-                 </div>\
-                 <div class="mb-3">\
-                  <label  class="form-label">USDT Rate</label>\
-                  <input type="text" class="form-control" id="mrchUsdtRate" value="'+data.usdtRate+'">\
-                 </div>\
-                 <div class="mb-3">\
-                  <label  class="form-label">Time '+data.OrderTime+' min</label>\
-                  <select class="form-select" id="mrchOrderTime">\
-                      <option value="15" selected>Select Option</option>\
-                      <option value="15">15 min</option>\
-                      <option value="30">30 min</option>\
-                      <option value="60">60 min</option>\
-                      <option value="120">120 min</option>\
-                      <option value="180">180 min</option>\
-                      <option value="360">360 min</option>\
-                      <option value="1440">24 hr</option>\
-                    </select>\
-                 </div>\
-              </div>\
-              <div class="col">\
-                  <div class="mb-3">\
-                      <label  class="form-label">Limit</label>\
-                      <input type="text" class="form-control" id="mrchLimitFrom" value="'+data.limitFrom+'"><br>\
-                      <span style="text-align: center; font-size: small;">To</span>\
-                      <input type="text" class="form-control" id="mrchLimitTo" value="'+data.limitTo+'">\
-                  </div>\
-                  <div class="mb-3">\
-                      <label  class="form-label">Pay Through</label>\
-                      <select class="form-select" id="mrchType">\
-                          <option value="Bank Transfer">Bank Transfer</option>\
-                          <option value="Cash Collections">Cash Collections</option>\
-                        </select>\
-                     </div>\
-              </div>\
-              <div class="d-grid gap-2">\
-                  <button onclick ="mrchSavechanges('+userID+')" class="btn btn-primary btn-xs" type="button">Save Changes</button>\
-              </div>\
-            </div>\
-          <div class="row">\
-              <div class="col">\
-                  <div class="card-header">\
-                     <h4>Merchant Order</h4>\
-                     <select onchange="marchentOrderList('+userID+', this.value)" class="form-select">\
-                     <option value="">Select Oder Type</option>\
-                      <option value="Pending">Pending</option>\
-                      <option value="Complete">Complete</option>\
-                    </select>\
-                    </div>\
-                  <div class="card-body" style="height: 25vh; overflow-y: auto;">\
-                      <ul id="mrchOrderlist" class="list-group">\
-                        </ul>\
-                  </div>\
-              </div>\
-          </div>\
-        </div>\
-      </div> ');
+  // function merchantInit(userID){
+  //   $("#topBacground").css({"display":"none"});
+  //   $.post('/user/getmerchant',{userID:userID},function(data){
+  //    if(data){
+  //       //console.log(data)
+  //       if(data.merchantStatus=="Accept"){
+  //         $("#view").html('<div class="card"  style="margin-top: 10vh; margin-bottom: 10vh; height: 80vh; ">\
+  //         <div class="card-header">\
+  //           <button onclick="closeWithdral()" type="button" class="btn-close float-end"></button>\
+  //          <h3>Merchant</h3> \
+  //          <p onclick="oofon()">'+data.merchantNickname+' <span onclick ="editmerchantNickname('+userID+')" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></span><br>'+data.merchantType+'</p>\
+  //          <div style="margin-top: -25px;" class="form-check form-switch">\
+  //           <span id="onOffText" style="margin-left: 24vh;">Online</span>\
+  //           <input onclick ="onlineOffline('+userID+')" style="" class="form-check-input float-end" type="checkbox" role="switch" id="onoff">\
+  //         </div>\
+  //         </div>\
+  //       <div class="card-body">\
+  //         <div class="row" style="height: 30vh; overflow-y: auto; font-size: x-small;">\
+  //             <div class="col">\
+  //                <div class="mb-3">\
+  //                 <label  class="form-label">Total Amount</label>\
+  //                 <input type="text" class="form-control" id="mrchTotalAmt" value="'+data.totalFund+'">\
+  //                </div>\
+  //                <div class="mb-3">\
+  //                 <label  class="form-label">USDT Rate</label>\
+  //                 <input type="text" class="form-control" id="mrchUsdtRate" value="'+data.usdtRate+'">\
+  //                </div>\
+  //                <div class="mb-3">\
+  //                 <label  class="form-label">Time '+data.OrderTime+' min</label>\
+  //                 <select class="form-select" id="mrchOrderTime">\
+  //                     <option value="15" selected>Select Option</option>\
+  //                     <option value="15">15 min</option>\
+  //                     <option value="30">30 min</option>\
+  //                     <option value="60">60 min</option>\
+  //                     <option value="120">120 min</option>\
+  //                     <option value="180">180 min</option>\
+  //                     <option value="360">360 min</option>\
+  //                     <option value="1440">24 hr</option>\
+  //                   </select>\
+  //                </div>\
+  //             </div>\
+  //             <div class="col">\
+  //                 <div class="mb-3">\
+  //                     <label  class="form-label">Limit</label>\
+  //                     <input type="text" class="form-control" id="mrchLimitFrom" value="'+data.limitFrom+'"><br>\
+  //                     <span style="text-align: center; font-size: small;">To</span>\
+  //                     <input type="text" class="form-control" id="mrchLimitTo" value="'+data.limitTo+'">\
+  //                 </div>\
+  //                 <div class="mb-3">\
+  //                     <label  class="form-label">Pay Through</label>\
+  //                     <select class="form-select" id="mrchType">\
+  //                         <option value="Bank Transfer">Bank Transfer</option>\
+  //                         <option value="Cash Collections">Cash Collections</option>\
+  //                       </select>\
+  //                    </div>\
+  //             </div>\
+  //             <div class="d-grid gap-2">\
+  //                 <button onclick ="mrchSavechanges('+userID+')" class="btn btn-primary btn-xs" type="button">Save Changes</button>\
+  //             </div>\
+  //           </div>\
+  //         <div class="row">\
+  //             <div class="col">\
+  //                 <div class="card-header">\
+  //                    <h4>Merchant Order</h4>\
+  //                    <select onchange="marchentOrderList('+userID+', this.value)" class="form-select">\
+  //                    <option value="">Select Oder Type</option>\
+  //                     <option value="Pending">Pending</option>\
+  //                     <option value="Complete">Complete</option>\
+  //                   </select>\
+  //                   </div>\
+  //                 <div class="card-body" style="height: 25vh; overflow-y: auto;">\
+  //                     <ul id="mrchOrderlist" class="list-group">\
+  //                       </ul>\
+  //                 </div>\
+  //             </div>\
+  //         </div>\
+  //       </div>\
+  //     </div> ');
 
-              if(data.onlineOffline==0){
-                $("#onoff").prop('checked', false);
-                $("#onOffText").html('Offline');
-              }else{
-                $("#onoff").prop('checked', true);
-                $("#onOffText").html('Online');
-              }
+  //             if(data.onlineOffline==0){
+  //               $("#onoff").prop('checked', false);
+  //               $("#onOffText").html('Offline');
+  //             }else{
+  //               $("#onoff").prop('checked', true);
+  //               $("#onOffText").html('Online');
+  //             }
            
 
+  //       }else{
+  //         //alert("Your are under review or cryteria not match");
+  //         $("#view").html(' <div class="card"  style="margin-top: 10vh; margin-bottom: 10vh; height: 80vh; overflow-y: auto; ">\
+  //               <div class="card-header">\
+  //                 <button onclick="closeWithdral()" type="button" class="btn-close float-end"></button>\
+  //               <h2>Merchant Alert</h2> \
+  //               </div>\
+  //             <div class="card-body">\
+  //               <p class="card-text">\
+  //               Your are under review or cryteria not match\
+  //               </p>\
+  //               </div>\
+  //           </div>')
+  //       }
+
+  //    }else{
+  //     $("#view").html(' <div class="card"  style="margin-top: 10vh; margin-bottom: 10vh; height: 80vh; overflow-y: auto; ">\
+  //     <div class="card-header">\
+  //       <button onclick="closeWithdral()" type="button" class="btn-close float-end"></button>\
+  //      <h2>Become A Merchant</h2> \
+  //     </div>\
+  //   <div class="card-body">\
+  //     <h5 class="card-title">Merchant Criteria</h5>\
+  //     <p class="card-text">\
+  //       1. Deposit 500 usdt<br>\
+  //       2. Proof of funds( we accept the following documents as proof of funds. Bank statements, payslip,gift certificate,sale of property documents,loan etc<br>\
+  //       3. Proof of addresses document ( bank statements, credit card statement,gas electricity bill)<br>\
+  //       4. Then click to become the Merchant button\
+  //     </p>\
+  //     <button id="merchantBecome" onclick="becomemerchant('+userID+')" type="button" class="btn btn-secondary">Become a merchant</button>\
+  //   </div>\
+  // </div>\
+  // ')
+  //    }
+  //   })
+  // }
+
+  function merchantInit(userID) {
+    $("#topBacground").css({ "display": "none" });
+
+    $.get(`/user/getMerchant/${userID}`, function (data) {
+      console.log(data)
+        if (data) {
+            if (data.merchantStatus == "Accept") {
+                $("#view").html(`
+                    <div class="card mt-4">
+                        <div style="margin-top: 5vh;" class="card-header d-flex justify-content-between align-items-center">
+                            <h4 class="mb-0">Merchant</h4>
+                            <button onclick="closeWithdral()" type="button" class="btn-close"></button>
+                        </div>
+                        <div class="card-body" style="font-size: 0.9rem;">
+                            <!-- Merchant Nickname -->
+                            <div class="d-flex align-items-center mb-2"">
+                            <strong class="me-2">${data.merchantNickname}</strong>
+                                <button onclick="editMerchantNickname(${userID})" class="btn btn-sm btn-outline-primary">
+                                    <i class="fa fa-pencil"></i>
+                                </button> &nbsp;&nbsp;&nbsp;&nbsp;
+                                 <strong class="me-2">${data.merchantType}</strong>
+                            </div>
+
+                            <!-- Bootstrap Tabs (Single Row) -->
+                            <ul class="nav nav-tabs nav-fill small">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="deposit-tab" data-bs-toggle="tab" href="#deposit">Deposit</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="withdraw-tab" data-bs-toggle="tab" href="#withdraw">Withdrawal</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="orders-tab" data-bs-toggle="tab" href="#orders">Orders</a>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content mt-2" style="height: 65vh; overflow-y: auto;">
+                                <!-- Deposit Tab -->
+                                <div class="tab-pane fade show active" id="deposit">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span>Online Status</span>
+                                        <div class="form-check form-switch">
+                                            <input onclick="onlineOffline(${userID})" class="form-check-input" type="checkbox" id="onoff-deposit">
+                                            <label class="form-check-label" id="onOffText-deposit">Offline</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-2">
+                                        <label class="form-label">Total Amount</label>
+                                        <input type="text" class="form-control form-control-sm" id="mrchTotalAmt" value="${data.totalFund}">
+                                    </div>
+
+                                   <div class="mb-2">
+                                          <label class="form-label">Charges (%)</label>
+                                          <select class="form-select form-select-sm" id="mrchCharges">
+                                              <!-- Generate options from 0.1% to 3% with a step of 0.1% -->
+                                              ${[...Array(30)].map((_, i) => {
+                                                  let value = (i + 1) / 10;
+                                                  return `<option value="${value}">${value}%</option>`;
+                                              }).join('')}
+                                          </select>
+                                      </div>
+
+                                    <div class="mb-2">
+                                        <label class="form-label">Limit (From - To)</label>
+                                        <div class="d-flex">
+                                            <input type="text" class="form-control form-control-sm me-1" id="mrchLimitFrom" value="${data.limitFrom}">
+                                            <input type="text" class="form-control form-control-sm" id="mrchLimitTo" value="${data.limitTo}">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-2">
+                                        <label class="form-label">Transaction Time</label>
+                                        <select class="form-select form-select-sm" id="mrchOrderTime">
+                                            <option value="15">15 min</option>
+                                            <option value="30">30 min</option>
+                                            <option value="60">60 min</option>
+                                            <option value="120">120 min</option>
+                                            <option value="180">180 min</option>
+                                            <option value="360">360 min</option>
+                                            <option value="1440">24 hr</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-2">
+                                        <label class="form-label">Transaction Through</label>
+                                        <select class="form-select form-select-sm" id="mrchType">
+                                            <option value="Bank Transfer">Bank Transfer</option>
+                                            <option value="Cash Collections">Cash Collections</option>
+                                        </select>
+                                    </div>
+
+                                    <button onclick="mrchSavechanges(${userID})" class="btn btn-primary btn-sm">Save</button>
+                                </div>
+
+                                <!-- Withdrawal Tab -->
+                                <div class="tab-pane fade" id="withdraw">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span>Online Status</span>
+                                        <div class="form-check form-switch">
+                                            <input onclick="onlineOffline(${userID})" class="form-check-input" type="checkbox" id="onoff-withdraw">
+                                            <label class="form-check-label" id="onOffText-withdraw">Offline</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-2">
+                                        <label class="form-label">Total Amount</label>
+                                        <input type="text" class="form-control form-control-sm" id="mrchTotalAmtWithdraw" value="${data.totalFund}">
+                                    </div>
+
+                                   <div class="mb-2">
+                                          <label class="form-label">Charges (%)</label>
+                                          <select class="form-select form-select-sm" id="mrchCharges">
+                                              <!-- Generate options from 0.1% to 3% with a step of 0.1% -->
+                                              ${[...Array(30)].map((_, i) => {
+                                                  let value = (i + 1) / 10;
+                                                  return `<option value="${value}">${value}%</option>`;
+                                              }).join('')}
+                                          </select>
+                                      </div>
+
+                                    <div class="mb-2">
+                                        <label class="form-label">Limit (From - To)</label>
+                                        <div class="d-flex">
+                                            <input type="text" class="form-control form-control-sm me-1" id="mrchLimitFromWithdraw" value="${data.limitFrom}">
+                                            <input type="text" class="form-control form-control-sm" id="mrchLimitToWithdraw" value="${data.limitTo}">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-2">
+                                        <label class="form-label">Transaction Time</label>
+                                        <select class="form-select form-select-sm" id="mrchOrderTimeWithdraw">
+                                            <option value="15">15 min</option>
+                                            <option value="30">30 min</option>
+                                            <option value="60">60 min</option>
+                                            <option value="120">120 min</option>
+                                            <option value="180">180 min</option>
+                                            <option value="360">360 min</option>
+                                            <option value="1440">24 hr</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-2">
+                                        <label class="form-label">Transaction Through</label>
+                                        <select class="form-select form-select-sm" id="mrchTypeWithdraw">
+                                            <option value="Bank Transfer">Bank Transfer</option>
+                                            <option value="Cash Collections">Cash Collections</option>
+                                        </select>
+                                    </div>
+
+                                    <button onclick="withdrawFunds(${userID})" class="btn btn-danger btn-sm">Save</button>
+                                </div>
+
+                                <!-- Order Details Tab -->
+                                <div class="tab-pane fade" id="orders">
+                               <div class="card">
+                                  <div class="card-header">
+                                      <h4>Merchant Orders</h4>
+                                      <ul class="nav nav-tabs" id="orderTabs">
+                                          <li class="nav-item">
+                                              <a class="nav-link active" id="deposit-tab" data-bs-toggle="tab" href="#depositOrders">Deposit</a>
+                                          </li>
+                                          <li class="nav-item">
+                                              <a class="nav-link" id="withdrawal-tab" data-bs-toggle="tab" href="#withdrawalOrders">Withdrawal</a>
+                                          </li>
+                                      </ul>
+                                  </div>
+                                  <div class="card-body tab-content" style="height: 50vh; overflow-y: auto;">
+                                      <!-- Deposit Orders -->
+                                      <div class="tab-pane fade show active" id="depositOrders">
+                                          <label class="form-label">Order Type</label>
+                                          <select class="form-select form-select-sm mb-2" onchange="marchentOrderList(${userID}, this.value)">
+                                              <option value="">All</option>
+                                              <option value="Pending">Pending</option>
+                                              <option value="Complete">Complete</option>
+                                          </select>
+                                          <ul id="mrchOrderlist" class="list-group"></ul>
+                                      </div>
+
+                                      <!-- Withdrawal Orders -->
+                                      <div class="tab-pane fade" id="withdrawalOrders">
+                                          <label class="form-label">Order Type</label>
+                                          <select class="form-select form-select-sm mb-2" onchange="filterOrders('withdrawal', this.value)">
+                                              <option value="">All</option>
+                                              <option value="Pending">Pending</option>
+                                              <option value="Complete">Complete</option>
+                                          </select>
+                                          <ul id="withdrawalOrderList" class="list-group"></ul>
+                                      </div>
+                                  </div>
+                              </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `);
+
+             
+
+              if(data.onlineOffline==0){
+                $("#onoff-deposit").prop('checked', false);
+                $("#onOffText-deposit").html('Offline');
+              }else{
+                $("#onoff-deposit").prop('checked', true);
+                $("#onOffText-deposit").html('Online');
+              }
+            }
         }else{
-          //alert("Your are under review or cryteria not match");
-          $("#view").html(' <div class="card"  style="margin-top: 10vh; margin-bottom: 10vh; height: 80vh; overflow-y: auto; ">\
-                <div class="card-header">\
-                  <button onclick="closeWithdral()" type="button" class="btn-close float-end"></button>\
-                <h2>Merchant Alert</h2> \
-                </div>\
-              <div class="card-body">\
-                <p class="card-text">\
-                Your are under review or cryteria not match\
-                </p>\
-                </div>\
-            </div>')
+          //// //// applyMerchant//////////
+          $("#view").html(`
+            <div class="card" style="margin-top: 10vh; margin-bottom: 10vh; height: 80vh; overflow-y: auto;">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h2 class="mb-0">Become A Merchant</h2> 
+                    <button onclick="closeWithdral()" type="button" class="btn-close"></button>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Merchant Criteria for Platform Onboarding</h5>
+                    <p class="card-text">
+                        <strong>1. Eligibility Requirements</strong><br>
+                        - Must be a legally registered entity or individual with valid identification.<br>
+                        - Compliance with Anti-Money Laundering (AML) and Know Your Customer (KYC) regulations.<br>
+                        - Provide business registration documents and tax compliance certificates.<br><br>
+        
+                        <strong>2. Security Deposit Policy</strong><br>
+                        - A security deposit will be frozen upon approval based on the merchant tier:<br>
+                        &nbsp;&nbsp;• <strong>Regular:</strong> 600 USDT equivalent fiat<br>
+                        &nbsp;&nbsp;• <strong>Pro:</strong> 1,200 USDT equivalent fiat<br>
+                        &nbsp;&nbsp;• <strong>Diamond:</strong> 2,400 USDT equivalent fiat<br>
+                        - This amount cannot be withdrawn during the merchant's active period on the platform.<br>
+                        - The deposit serves as collateral for potential disputes, chargebacks, or penalties for policy violations.<br><br>
+        
+                        <strong>3. Trading and Transaction Standards</strong><br>
+                        - Offer competitive pricing and maintain liquidity.<br>
+                        - Ensure timely order fulfillment and minimal cancellation rates.<br>
+                        - Adhere to platform guidelines for transaction handling and dispute resolution.<br><br>
+        
+                        <strong>4. Risk Management and Compliance</strong><br>
+                        - Compliance with all regulatory requirements and platform policies.<br>
+                        - Implementation of security measures to protect user data and funds.<br>
+                        - Regular reporting and auditing to ensure transparency.<br><br>
+        
+                        <strong>5. Customer Service and Reputation</strong><br>
+                        - Maintain a high customer satisfaction rating.<br>
+                        - Provide responsive customer support and dispute resolution.<br>
+                        - Uphold ethical practices and avoid fraudulent activities.<br><br>
+        
+                        <strong>6. Performance Monitoring</strong><br>
+                        - Continuous evaluation of trading volume and order completion rate.<br>
+                        - Adherence to platform’s Service Level Agreement (SLA).<br>
+                        - Regular reviews and audits by the platform’s compliance team.<br><br>
+        
+                        <strong>7. Termination and Penalty Clause</strong><br>
+                        - Violations of platform policies or regulatory compliance will result in penalties or termination.<br>
+                        - The frozen security deposit may be used to cover losses or compensate affected users.<br><br>
+        
+                        By meeting these criteria, merchants can access a secure, transparent, and scalable trading environment.
+                    </p>
+                    <button id="merchantBecome" onclick="becomemerchant(${userID})" type="button" class="btn btn-secondary">
+                        Become a Merchant
+                    </button>
+                </div>
+            </div>
+        `);
+        
+     
         }
+    });
+}
 
-     }else{
-      $("#view").html(' <div class="card"  style="margin-top: 10vh; margin-bottom: 10vh; height: 80vh; overflow-y: auto; ">\
-      <div class="card-header">\
-        <button onclick="closeWithdral()" type="button" class="btn-close float-end"></button>\
-       <h2>Become A Merchant</h2> \
-      </div>\
-    <div class="card-body">\
-      <h5 class="card-title">Merchant Criteria</h5>\
-      <p class="card-text">\
-        1. Deposit 500 usdt<br>\
-        2. Proof of funds( we accept the following documents as proof of funds. Bank statements, payslip,gift certificate,sale of property documents,loan etc<br>\
-        3. Proof of addresses document ( bank statements, credit card statement,gas electricity bill)<br>\
-        4. Then click to become the Merchant button\
-      </p>\
-      <button id="merchantBecome" onclick="becomemerchant('+userID+')" type="button" class="btn btn-secondary">Become a merchant</button>\
-    </div>\
-  </div>\
-  ')
-     }
-    })
-   
+
+function becomemerchant(userID){
+  $("#merchantBecome").attr('disabled','disabled');
+  // $.post('/user/applyMerchant',{userID:userID},function(data){
+  //   console.log(data);
+  //   merchantInit(userID);
+  // })
+  $.get(`/user/getMerchantData/${userID}`, function (data) {
+    console.log(data)
+    $("#view").html(`
+      <div class="card" style="margin-top: 10vh; margin-bottom: 10vh; height: 80vh; overflow-y: auto;">
+          <div class="card-header d-flex justify-content-between align-items-center">
+              <h2 class="mb-0">Apply as a Merchant</h2> 
+              <button onclick="closeWithdral()" type="button" class="btn-close"></button>
+          </div>
+          <div class="card-body">
+              <h5 class="card-title">Merchant Application Form</h5>
+              <form id="merchantForm">
+                  <label>Merchant Nickname:</label>
+                  <input type="text" id="merchantNickname" class="form-control" value="${data.userName}" required><br>
+  
+                  <label>Merchant Type:</label>
+                  <select id="merchantType" class="form-control" required>
+                   <option value="Business">Business</option>
+                      <option value="Individual">Individual</option>
+                  </select><br>
+  
+                  <label>Business Name:</label>
+                  <input type="text" id="businessName" class="form-control" required><br>
+  
+                  <label>Business License:</label>
+                  <input type="text" id="businessLicense" class="form-control" required><br>
+  
+                  <label>Upload Business Document:</label>
+                  <input type="file" id="businessDocument" class="form-control" required><br>
+  
+                  <label>Merchant Tier:</label><br>
+                  <label><input type="radio" name="merchantTier" value="regular" checked> Regular - 600 USDT</label><br>
+                  <label><input type="radio" name="merchantTier" value="pro"> Pro - 1200 USDT</label><br>
+                  <label><input type="radio" name="merchantTier" value="diamond"> Diamond - 2400 USDT</label><br><br>
+  
+                  <label>Currency Symbol:</label>
+                  <input type="text" id="currencySymbol" class="form-control" value="${data.currencySymbol}" required><br>
+  
+                  <label>Currency:</label>
+                  <input type="text" id="currency" class="form-control" value="${data.currency}" required><br>
+  
+                  <label>Post Code:</label>
+                  <input type="text" id="postCode" class="form-control" value="${data.kycDetails.postCode}" required><br>
+  
+                  <label>Address:</label>
+                  <input type="text" id="address" class="form-control" value="${data.kycDetails.address1}, ${data.kycDetails.address2} , ${data.kycDetails.city} , ${data.kycDetails.country}" required><br>
+  
+                  <button type="button" onclick="submitMerchantApplication()" class="btn btn-secondary">
+                      Apply as Merchant
+                  </button>
+              </form>
+          </div>
+      </div>
+  `);
+  
+  })
+}
+
+
+const submitMerchantApplication = async (userID) => {
+  let formData = new FormData();
+  formData.append('userID', userID);
+  formData.append('merchantNickname', $("#nickname").val());
+  formData.append('merchantType', $("#merchantType").val());
+  formData.append('businessName', $("#businessName").val());
+  formData.append('merchantTier', $("#merchantTier").val());
+  formData.append('totalDeposit', $("#totalDeposit").val());
+  formData.append('currencySymbol', $("#currencySymbol").val());
+  formData.append('currency', $("#currency").val());
+  formData.append('postCode', $("#postCode").val());
+  formData.append('address', $("#address").val());
+
+  // File inputs
+  formData.append('merchentDoc', $('#businessDoc')[0].files[0]);
+  $.ajax({
+      url: "/applymerchant",
+      type: "POST",
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function(response) {
+          alert(response.message);
+      },
+      error: function(err) {
+          alert("Error: " + err.responseJSON.error);
+      }
+  });
+};
+
+// function submitMerchantApplication(userID) {
+//   const merchantData = new FormData();
+//   merchantData.append("userID", `${userID}`);
+//   merchantData.append("merchantNickname", $("#merchantNickname").val());
+//   merchantData.append("merchantType", $("#merchantType").val());
+//   merchantData.append("businessName", $("#businessName").val());
+//   merchantData.append("businessLicense", $("#businessLicense").val());
+//   merchantData.append("businessDocument", $("#businessDocument")[0].files[0]);
+//   merchantData.append("merchantTier", $('input[name="merchantTier"]:checked').val());
+//   merchantData.append("currencySymbol", $("#currencySymbol").val());
+//   merchantData.append("currency", $("#currency").val());
+//   merchantData.append("postCode", $("#postCode").val());
+//   merchantData.append("address", $("#address").val());
+
+//   $.ajax({
+//       url: "/user/applyMerchant",
+//       type: "POST",
+//       data: merchantData,
+//       processData: false,
+//       contentType: false,
+//       success: function(response) {
+//           alert("Merchant application submitted successfully!");
+         
+//       },
+//       error: function(error) {
+//           alert("Error submitting application. Please try again.");
+//       }
+//   });
+// }
+
+function onlineOffline(userID){
+  var  onoff=0;
+  var aa=$("#onoff-deposit").prop('checked')
     
-  }
+    if(aa){
+      //////operation for true 
+     //console.log("ture  onlone");
+      onoff=1;
+      $("#onOffText-deposit").html('Online');
+    }else{
+     // console.log("false  offline");
+      onoff=0;
+      $("#onOffText-deposit").html('Offline');
+      
+    }
+  $.post('/user/onlineOfflinemMerchant',{userID:userID, onoff: onoff},function(data){
 
-  function becomemerchant(userID){
-    $("#merchantBecome").attr('disabled','disabled');
-    $.post('/user/becomemerchant',{userID:userID},function(data){
-      console.log(data);
-      merchantInit(userID);
-    })
-  }
+  });
+}
+  
 
   function mrchSavechanges(userID){
     var mrchTotalAmt =$("#mrchTotalAmt").val().trim();
@@ -2179,7 +2582,7 @@ function verifyNowinit(){
    
   }
 
-  function editmerchantNickname(userID){
+  function editMerchantNickname(userID){
     var newPasw = prompt("Enter Nick Name");
     $.post('/user/editmerchantNickname',{
       userID:userID,
@@ -2227,6 +2630,9 @@ function verifyNowinit(){
                 <br><span style="font-size: medium; color: #fffbfb;">Order ID: '+val.OrderID+'</span>\
                 <br><span style="font-size: medium; color: #fffbfb;">'+val.currencySymbol+'  '+val.currencyRate+'</span>\
                 '+IhaveTransfer+'\
+                  <button onclick="openChat('+val.OrderID+')" class="btn btn-sm btn-primary">\
+                 <i class="fa fa-comments" aria-hidden="true"></i> Chat\
+                </button>\
                 <br> Payble Amount <span style="color: #fffbfb;">'+val.currencySymbol+''+Number(val.marchantPaytoCust).toFixed(2)+'</span>\
                </p>\
               <div id="bankdetails'+val.OrderID+'" style="color: #f5efef; display: non;" >\
@@ -2246,6 +2652,9 @@ function verifyNowinit(){
                 <br><span style="font-size: medium; color: #fffbfb;">Order ID: '+val.OrderID+'</span>\
                 <br><span style="font-size: medium; color: #fffbfb;">'+val.currencySymbol+'  '+val.currencyRate+'</span>\
                 '+IhaveTransfer+'\
+                  <button onclick="openChat('+val.OrderID+')" class="btn btn-sm btn-primary">\
+                 <i class="fa fa-comments" aria-hidden="true"></i> Chat\
+                </button>\
                 <br> Payble Amount <span style="color: #fffbfb;">'+val.currencySymbol+''+Number(val.marchantPaytoCust).toFixed(2)+'</span>\
                </p>\
               <div id="bankdetails'+val.OrderID+'" style="color: #f5efef; display: non;" >\
@@ -2266,6 +2675,9 @@ function verifyNowinit(){
                 <br><span style="font-size: medium; color: #fffbfb;">Order ID: '+val.OrderID+'</span>\
                 <br><span style="font-size: medium; color: #fffbfb;">'+val.currencySymbol+'  '+val.currencyRate+'</span>\
                 '+IhaveTransfer+'\
+                 <button onclick="openChat('+val.OrderID+')" class="btn btn-sm btn-primary">\
+                 <i class="fa fa-comments" aria-hidden="true"></i> Chat\
+                </button>\
                 <br> Payble Amount <span style="color: #fffbfb;">'+val.currencySymbol+''+Number(val.marchantPaytoCust).toFixed(2)+'</span>\
                </p>\
               <div id="bankdetails'+val.OrderID+'" style="color: #f5efef; display: non;" >\
@@ -2286,6 +2698,9 @@ function verifyNowinit(){
                 <br><span style="font-size: medium; color: #fffbfb;">Order ID: '+val.OrderID+'</span>\
                 <br><span style="font-size: medium; color: #fffbfb;">'+val.currencySymbol+'  '+val.currencyRate+'</span>\
                 '+IhaveTransfer+'\
+                  <button onclick="openChat('+val.OrderID+')" class="btn btn-sm btn-primary">\
+                 <i class="fa fa-comments" aria-hidden="true"></i> Chat\
+                </button>\
                 <br> Payble Amount <span style="color: #fffbfb;">'+val.currencySymbol+''+Number(val.marchantPaytoCust).toFixed(2)+'</span>\
                </p>\
               <div id="bankdetails'+val.OrderID+'" style="color: #f5efef; display: non;" >\
@@ -2307,6 +2722,19 @@ function verifyNowinit(){
      
     });
   }
+
+  function openChat(orderID) {
+    $("#chatModal").modal("show");
+    $("#chatModalLabel").text("Chat for Order ID: " + orderID);
+    
+    // Load chat messages from server (Example API call)
+    $.post("/chat/getMessages", { orderID }, function(data) {
+        $("#chatMessages").html(""); // Clear previous messages
+        data.forEach(msg => {
+            $("#chatMessages").append(`<p><strong>${msg.sender}:</strong> ${msg.text}</p>`);
+        });
+    });
+}
 
   function marchantOrdrtComplete(OrderID){
     $.post('/user/marchantOrdrtComplete',{OrderID:OrderID},function(data){

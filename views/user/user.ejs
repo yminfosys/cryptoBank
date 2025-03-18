@@ -87,7 +87,53 @@
 
    </div>
 
+   <div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="chatModalLabel">Chat with Merchant</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="chatMessages" style="height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;">
+                    <!-- Chat messages will appear here -->
+                </div>
+                <div class="input-group mt-2">
+                    <input type="text" class="form-control" id="chatInput" placeholder="Type a message...">
+                    <button class="btn btn-primary" onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+
+
+<!-- Update System Modal -->
+<div class="modal fade" id="systemUpdateModal" tabindex="-1" aria-labelledby="systemUpdateLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="systemUpdateLabel">System Update</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Our system is currently being updated to enhance performance. Please bear with us while we complete the improvements.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Trigger Modal on Page Load -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var updateModal = new bootstrap.Modal(document.getElementById("systemUpdateModal"));
+    updateModal.show();
+  });
+</script>
 
    
 

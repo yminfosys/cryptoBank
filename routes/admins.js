@@ -11,7 +11,7 @@ const saltRounds = 10;
 
 const moment=require('moment');
 
-///////File upload////////
+// ///////File upload////////
 var aws = require('aws-sdk')
 var multer = require('multer')
 var multerS3 = require('multer-s3-transform')
@@ -58,6 +58,79 @@ var upload = multer({
     { name: 'file5', maxCount: 1 },
     { name: 'file6', maxCount: 1 }
 ])
+
+
+// const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+// const multer = require('multer');
+// const sharp = require('sharp');
+// const { PassThrough } = require('stream');
+
+// const { S3_ENDPOINT, BUCKET_NAME, AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY } = process.env;
+
+// // Create S3 client
+// const s3Client = new S3Client({
+//     endpoint: S3_ENDPOINT,
+//     region: AWS_REGION,
+//     credentials: {
+//         accessKeyId: AWS_ACCESS_KEY_ID,
+//         secretAccessKey: AWS_SECRET_ACCESS_KEY
+//     }
+// });
+
+// // Configure multer storage (memory)
+// const storage = multer.memoryStorage();
+// const upload = multer({ storage });
+
+// const processAndUploadImage = async (buffer, fileName, mimeType) => {
+//     const resizedBuffer = await sharp(buffer)
+//         .resize(1200, 800, { fit: sharp.fit.inside })
+//         .toBuffer();
+
+//     const uploadParams = {
+//         Bucket: BUCKET_NAME,
+//         Key: `${Date.now().toString()}-${fileName}`,
+//         Body: resizedBuffer,
+//         ContentType: mimeType,
+//         ACL: 'public-read',
+//     };
+
+//     const command = new PutObjectCommand(uploadParams);
+//     await s3Client.send(command);
+
+//     return `https://${S3_ENDPOINT}/${BUCKET_NAME}/${uploadParams.Key}`;
+// };
+
+// // Middleware for handling multiple file uploads
+// const cpUpload = async (req, res, next) => {
+//     upload.fields([
+//         { name: 'fundDepositScrn', maxCount: 1 },
+//         { name: 'filekycId', maxCount: 1 },
+//         { name: 'fileSelfe', maxCount: 1 },
+//         { name: 'filekycVideo', maxCount: 1 },
+//         { name: 'file5', maxCount: 1 },
+//         { name: 'file6', maxCount: 1 }
+//     ])(req, res, async (err) => {
+//         if (err) {
+//             return res.status(400).json({ error: err.message });
+//         }
+
+//         try {
+//             for (const fieldName in req.files) {
+//                 for (const file of req.files[fieldName]) {
+//                     if (/^image/i.test(file.mimetype)) {
+//                         const fileUrl = await processAndUploadImage(file.buffer, file.originalname, file.mimetype);
+//                         file.url = fileUrl;
+//                     }
+//                 }
+//             }
+//             next();
+//         } catch (error) {
+//             console.error("File upload error:", error);
+//             res.status(500).json({ error: "File upload failed" });
+//         }
+//     });
+// };
+
 
 //"sib-api-v3-sdk": "^8.3.0",
 
@@ -531,7 +604,8 @@ router.post('/updateUsdtRate',  async function(req, res, next) {
   const usdtRate= await db.usdtrate.findOne({country:req.body.country});
   if(usdtRate){
     const updateusdtRate= await db.usdtrate.findOneAndUpdate({country:req.body.country},{$set:{
-      usdtRate:req.body.usdtRate
+      usdtRate:req.body.usdtRate,
+      usdtSellRate:req.body.usdtSellRate
     }})
     await dbCon.closeDB();
     res.json({});

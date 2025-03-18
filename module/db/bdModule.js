@@ -62,6 +62,154 @@ const merchantSchema = new mongoose.Schema({
 });
 var merchantmodul = mongoose.model('cashwalletmerchants', merchantSchema);
 
+
+// const AdvancedMerchantSchema = new mongoose.Schema({
+//     userID: { type: String, required: true, unique: true },
+//     merchantNickname: { type: String, required: true },
+//     merchantType: { type: String, required: true }, // Example: Individual or Business
+//     postCode:{ type: String, required: true },
+//     address:{ type: String, required: true },
+//     status: { type: String, enum: ["Active", "Inactive"], default: "Inactive" }, // Merchant Active/Inactive status
+
+//     deposit: {
+//         onlineOffline: { type: Boolean, default: false }, // Online/Offline switch for Deposit
+//         limitFrom: { type: Number, required: true },
+//         limitTo: { type: Number, required: true },
+//         timeSelection: { type: Number, enum: [15, 30, 60, 120, 180, 360, 1440], required: true }, // Time selection (minutes)
+//         transactionMethod: { type: String, enum: ["Bank Transfer", "Cash Collections"], required: true },
+//         totalAmount: { type: Number, required: true }, // Added Total Amount in Deposit
+//         charges: { type: Number, min: 0.1, max: 3, required: true } // Charges (0.1% to 3%)
+//     },
+
+//     withdrawal: {
+//         onlineOffline: { type: Boolean, default: false }, // Online/Offline switch for Withdrawal
+//         limitFrom: { type: Number, required: true },
+//         limitTo: { type: Number, required: true },
+//         timeSelection: { type: Number, enum: [15, 30, 60, 120, 180, 360, 1440], required: true }, // Time selection (minutes)
+//         transactionMethod: { type: String, enum: ["Bank Transfer", "Cash Collections"], required: true },
+//         totalAmount: { type: Number, required: true }, // Total available amount for withdrawal
+//         charges: { type: Number, min: 0.1, max: 3, required: true } // Charges (0.1% to 3%)
+//     },
+
+//     orders: {
+//         depositOrders: [
+//             {
+//                 orderID: { type: String, required: true },
+//                 custID: { type: String, required: true },
+//                 userName: { type: String, required: true },
+//                 orderTime: { type: Number, required: true }, // Time in minutes
+//                 currencySymbol: { type: String, required: true },
+//                 currency: { type: String, required: true },
+//                 currencyRate: { type: Number, required: true },
+//                 charges: { type: Number, min: 0.1, max: 3, required: true }, // Charges (0.1% to 3%)
+//                 merchantPayToCust: { type: Number, required: true },
+//                 status: { type: String, enum: ["Pending", "Complete"], required: true }
+//             }
+//         ],
+//         withdrawalOrders: [
+//             {
+//                 orderID: { type: String, required: true },
+//                 custID: { type: String, required: true },
+//                 userName: { type: String, required: true },
+//                 orderTime: { type: Number, required: true }, // Time in minutes
+//                 currencySymbol: { type: String, required: true },
+//                 currency: { type: String, required: true },
+//                 currencyRate: { type: Number, required: true },
+//                 charges: { type: Number, min: 0.1, max: 3, required: true }, // Charges (0.1% to 3%)
+//                 merchantGetPayfromCust: { type: Number, required: true },
+//                 status: { type: String, enum: ["Pending", "Complete"], required: true }
+//             }
+//         ]
+//     }
+// }, { timestamps: true });
+
+const ChatSchema = new mongoose.Schema({
+    senderID: { type: String, required: true }, // ID of sender (merchant or customer)
+    message: { type: String, required: false }, // Text message (optional)
+    media: { 
+        url: { type: String, required: false }, // URL of the attached media file
+        type: { type: String, enum: ["image", "video", "document"], required: false } // Media type
+    },
+    timestamp: { type: Date, default: Date.now }
+});
+
+const AdvancedMerchantSchema = new mongoose.Schema({
+    userID: { type: String, required: true, unique: true },
+    merchantNickname: { type: String, required: true },
+    merchantType: { type: String, required: true }, // Example: Individual or Business
+    businessName: { type: String, required: true },
+    businessLicense: { type: String, required: true }, 
+    businessDocument: { type: String, required: true }, // Store file path
+    merchantTier: { type: String, enum: ["regular", "pro", "diamond"], required: true },
+    totalDeposit: { type: Number, required: true }, 
+    currencySymbol: { type: String, required: true },
+    currency: { type: String, required: true },
+    postCode: { type: String, required: true },
+    address: { type: String, required: true },
+    status: { type: String, enum: ["Active", "Inactive", "rejected"], default: "Inactive" }, // Merchant Active/Inactive status
+
+    deposit: {
+        onlineOffline: { type: Boolean, default: false }, // Online/Offline switch for Deposit
+        limitFrom: { type: Number, required: true },
+        limitTo: { type: Number, required: true },
+        timeSelection: { type: Number, enum: [15, 30, 60, 120, 180, 360, 1440], required: true }, // Time selection (minutes)
+        transactionMethod: { type: String, enum: ["Bank Transfer", "Cash Collections"], required: true },
+        otpVerification: { type: Boolean, default: false }, // OTP required if Cash Collection is selected
+        totalAmount: { type: Number, required: true }, // Added Total Amount in Deposit
+        charges: { type: Number, min: 0.1, max: 3, required: true } // Charges (0.1% to 3%)
+    },
+
+    withdrawal: {
+        onlineOffline: { type: Boolean, default: false }, // Online/Offline switch for Withdrawal
+        limitFrom: { type: Number, required: true },
+        limitTo: { type: Number, required: true },
+        timeSelection: { type: Number, enum: [15, 30, 60, 120, 180, 360, 1440], required: true }, // Time selection (minutes)
+        transactionMethod: { type: String, enum: ["Bank Transfer", "Cash Collections"], required: true },
+        otpVerification: { type: Boolean, default: false }, // OTP required if Cash Collection is selected
+        totalAmount: { type: Number, required: true }, // Total available amount for withdrawal
+        charges: { type: Number, min: 0.1, max: 3, required: true } // Charges (0.1% to 3%)
+    },
+
+    orders: {
+        depositOrders: [
+            {
+                orderID: { type: String, required: true },
+                custID: { type: String, required: true },
+                userName: { type: String, required: true },
+                orderTime: { type: Number, required: true }, // Time in minutes
+                currencySymbol: { type: String, required: true },
+                currency: { type: String, required: true },
+                currencyRate: { type: Number, required: true },
+                charges: { type: Number, min: 0.1, max: 3, required: true }, // Charges (0.1% to 3%)
+                merchantPayToCust: { type: Number, required: true },
+                otpVerified: { type: Boolean, default: false }, // OTP verification status
+                status: { type: String, enum: ["Pending", "Complete"], required: true },
+                chat: [ChatSchema] // Chat functionality added
+            }
+        ],
+        withdrawalOrders: [
+            {
+                orderID: { type: String, required: true },
+                custID: { type: String, required: true },
+                userName: { type: String, required: true },
+                orderTime: { type: Number, required: true }, // Time in minutes
+                currencySymbol: { type: String, required: true },
+                currency: { type: String, required: true },
+                currencyRate: { type: Number, required: true },
+                charges: { type: Number, min: 0.1, max: 3, required: true }, // Charges (0.1% to 3%)
+                merchantGetPayfromCust: { type: Number, required: true },
+                otpVerified: { type: Boolean, default: false }, // OTP verification status
+                status: { type: String, enum: ["Pending", "Complete"], required: true },
+                chat: [ChatSchema] // Chat functionality added
+            }
+        ]
+    }
+}, { timestamps: true });
+
+
+
+var AdvancedMerchant = mongoose.model("cashwalletadvancedmerchants", AdvancedMerchantSchema);
+
 const merchantorderSchema = new mongoose.Schema({ 
     userName:String,
     userID:Number,
@@ -199,7 +347,8 @@ var mycurrencymodul = mongoose.model('cashwalletmycurrencys', mycurrencySchema);
 const usdtrateSchema = new mongoose.Schema({ 
     country:String,
     currency:String,
-    usdtRate:String
+    usdtRate:String,
+    usdtSellRate:String,
 });
 var usdtratemodul = mongoose.model('cashwalletusdtrates', usdtrateSchema);
 
@@ -269,5 +418,6 @@ module.exports={
     forgetPassword:forgetPasswordmodul,
     merchant:merchantmodul,
     merchantorder:merchantordermodul,
-    paymentmethod:paymentmethodmodul
+    paymentmethod:paymentmethodmodul,
+    AdvancedMerchant
 }

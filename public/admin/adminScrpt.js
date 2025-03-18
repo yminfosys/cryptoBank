@@ -306,7 +306,8 @@ function updateUsdtRate(){
     var country=datas[0]
     var currency=datas[1]
     var usdtRate=$("#usdtRate").val();
-    $.post('/admin/updateUsdtRate',{country:country,currency:currency,usdtRate:usdtRate},function(result){
+    var usdtSellRate=$("#usdtSellRate").val();
+    $.post('/admin/updateUsdtRate',{country:country,currency:currency,usdtRate:usdtRate, usdtSellRate},function(result){
         usdtList()
     })
 }
@@ -316,7 +317,7 @@ function usdtList(){
         $("#usdtList").html('')
         data.forEach(val => {
             $("#usdtList").append('<li class="list-group-item">\
-            <p class="">Country : '+val.country+' ['+val.currency+'] <br> USDT Rate: '+val.usdtRate+'</p>\
+            <p class="">Country : '+val.country+' ['+val.currency+'] <br> USDT Buy Rate: '+val.usdtRate+' <br> USDT Sell Rate: '+val.usdtSellRate+'</p>\
            </li>');
 
             }); 

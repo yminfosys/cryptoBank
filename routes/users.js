@@ -15,7 +15,7 @@ const bcrypt = require('bcrypt');
 const { ExplainVerbosity } = require('mongodb');
 const saltRounds = 10;
 
-///////File upload////////
+// ///////File upload////////
 var aws = require('aws-sdk')
 var multer = require('multer')
 var multerS3 = require('multer-s3-transform')
@@ -65,6 +65,90 @@ var upload = multer({
 ])
 
 
+
+
+// const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+// const multer = require('multer');
+// const sharp = require('sharp');
+// const { PassThrough } = require('stream');
+
+// const { S3_ENDPOINT, BUCKET_NAME, AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY } = process.env;
+
+// // console.log({
+// //   S3_ENDPOINT,
+// //   BUCKET_NAME,
+// //   AWS_REGION,
+// //   AWS_ACCESS_KEY_ID,
+// //   AWS_SECRET_ACCESS_KEY
+// // });
+
+// const s3Client = new S3Client({ region: "us-east-1" }); // Change "us-east-1" if needed
+// s3Client.config.region.then(console.log).catch(console.error);
+
+// // Create S3 client
+// // const s3Client = new S3Client({
+// //     endpoint: S3_ENDPOINT,
+// //     region: AWS_REGION,
+// //     credentials: {
+// //         accessKeyId: AWS_ACCESS_KEY_ID,
+// //         secretAccessKey: AWS_SECRET_ACCESS_KEY
+// //     }
+// // });
+
+// // Configure multer storage (memory)
+// const storage = multer.memoryStorage();
+// const upload = multer({ storage });
+
+// const processAndUploadImage = async (buffer, fileName, mimeType) => {
+//     const resizedBuffer = await sharp(buffer)
+//         .resize(1200, 800, { fit: sharp.fit.inside })
+//         .toBuffer();
+
+//     const uploadParams = {
+//         Bucket: BUCKET_NAME,
+//         Key: `${Date.now().toString()}-${fileName}`,
+//         Body: resizedBuffer,
+//         ContentType: mimeType,
+//         ACL: 'public-read',
+//     };
+
+//     const command = new PutObjectCommand(uploadParams);
+//     await s3Client.send(command);
+
+//     return `https://${S3_ENDPOINT}/${BUCKET_NAME}/${uploadParams.Key}`;
+// };
+
+// // Middleware for handling multiple file uploads
+// const cpUpload = async (req, res, next) => {
+//     upload.fields([
+//         { name: 'fundDepositScrn', maxCount: 1 },
+//         { name: 'filekycId', maxCount: 1 },
+//         { name: 'fileSelfe', maxCount: 1 },
+//         { name: 'filekycVideo', maxCount: 1 },
+//         { name: 'file5', maxCount: 1 },
+//         { name: 'file6', maxCount: 1 },
+//         { name: 'merchentDoc', maxCount: 1 }
+//     ])(req, res, async (err) => {
+//         if (err) {
+//             return res.status(400).json({ error: err.message });
+//         }
+
+//         try {
+//             for (const fieldName in req.files) {
+//                 for (const file of req.files[fieldName]) {
+//                     if (/^image/i.test(file.mimetype)) {
+//                         const fileUrl = await processAndUploadImage(file.buffer, file.originalname, file.mimetype);
+//                         file.url = fileUrl;
+//                     }
+//                 }
+//             }
+//             next();
+//         } catch (error) {
+//             console.error("File upload error:", error);
+//             res.status(500).json({ error: "File upload failed" });
+//         }
+//     });
+// };
 
 
 
@@ -985,7 +1069,9 @@ router.post('/newPasswordRequest', async function(req, res, next) {
 
 
 
-router.post('/getmerchant', async function(req, res, next) {
+router.get('/getMerchant02', async function(req, res, next) {
+
+  console.log("ngvghv",req.params)
   try {
   await dbCon.connectDB();
   const user= await db.merchant.findOne({merchantuserID:req.body.userID});
@@ -1376,6 +1462,30 @@ router.post('/delete', async function(req, res, next) {
 
 //{ "_id" : ObjectId("6673b97ffa820251f5d846b2"), "userName" : "CHONDON CHOKROBORTTY", "userID" : 9, "accountNumber" : "1718860159792", "multyCurrencyPermition" : "No", "password" : "$2b$10$8I7LxDi1b9NmiyOsboBiZ.CBjinKDODHd8geZd1gBSO1lRnYz538S", "email" : "chondon36@gmail.com", "mobile" : "9064104132", "varyficatinStatus" : "inReview", "country" : "India", "countryCode" : "+91", "currency" : "INR", "currencySymbol" : "₹", "accountBalance" : "0", "usdtBalance" : "0", "regdate" : ISODate("2024-06-20T05:09:19.800Z"), "__v" : 0 }
 
+
+
+const  {getApplyMerchantData,applyMerchant,getMerchant,updateMerchant,toggleOnline,addOrder,chat} = require("../controller/merchantController");
+
+router.get("/getMerchantData/:userID", getApplyMerchantData);
+router.post("/applyMerchant", applyMerchant);
+ router.get("/getMerchant/:userID", getMerchant);
+router.put("/updateMerchant/:userID", updateMerchant);
+router.put("/toggleOnline/:userID", toggleOnline);
+router.post("/addOrder/:userID", addOrder);
+router.post("/chat/:userID", chat);
+
+// router.get("/getMerchant", async (req, res) => {
+//     console.log(req.params)
+//     try {
+//         await dbCon.connectDB();
+//         const merchant = await AdvancedMerchant.findOne({ userID: req.params.userID });
+//         await dbCon.closeDB();
+//         if (!merchant) return res.status(404).json({ message: "Merchant not found" });
+//         res.json(merchant);
+//     } catch (error) {
+//         res.status(500).json({ message: "Server error" });
+//     }
+// });
 
 
 
